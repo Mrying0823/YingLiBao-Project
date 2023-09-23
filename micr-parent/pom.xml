@@ -20,6 +20,8 @@
     <!-- 聚合 -->
     <modules>
         <module>../micr-api</module>
+        <module>../micr-dataservice</module>
+        <module>../micr-web</module>
     </modules>
 
     <properties>
