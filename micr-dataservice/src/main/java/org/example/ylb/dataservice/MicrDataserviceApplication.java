@@ -5,7 +5,9 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-// 启动 dubbo 服务
+/**
+ * @author 邓和颖
+ */ // 启动 dubbo 服务
 @EnableDubbo
 // Mapper 扫描包
 @MapperScan(basePackages = "org.example.ylb.dataservice.mapper")

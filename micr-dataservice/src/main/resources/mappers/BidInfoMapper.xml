@@ -103,4 +103,13 @@
       bid_status = #{bidStatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 累计成交金额 -->
+  <select id="selectSumBidMoney" resultType="java.math.BigDecimal">
+    select
+    sum(bid_money) as sumBidMoney
+
+    from b_bid_info
+  </select>
+
 </mapper>

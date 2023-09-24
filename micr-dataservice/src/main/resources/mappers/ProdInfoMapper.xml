@@ -210,4 +210,12 @@
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 计算利率平均值 -->
+  <select id="selectAvgRate" resultType="java.math.BigDecimal">
+    select
+    round(avg(rate),2) as avgRate
+
+    from b_prod_info
+  </select>
 </mapper>

@@ -125,4 +125,12 @@
       header_image = #{headerImage,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 注册用户数量 -->
+  <select id="selectCountUser" resultType="java.lang.Integer">
+    select
+    count(*) as ct
+
+    from u_user
+  </select>
 </mapper>
