@@ -1,5 +1,7 @@
 package org.example.ylb.front.view;
 
+import org.example.ylb.common.enums.RespCode;
+
 /**
  * @author 邓和颖
  * @since 2023/9/24 1:13
@@ -16,6 +18,27 @@ public class RespResult {
 
     // 单个数据
     private Object retData;
+
+    // 表示成功的 RespResult 对象
+    public static RespResult ok() {
+        RespResult respResult = new RespResult();
+        respResult.setCode(RespCode.SUCCESS.getCode());
+        respResult.setMsg(RespCode.SUCCESS.getMsg());
+        return respResult;
+    }
+
+    // 表示失败的 RespResult 对象
+    public static RespResult fail() {
+        RespResult respResult = new RespResult();
+        respResult.setCode(RespCode.BAD_REQUEST.getCode());
+        respResult.setMsg(RespCode.BAD_REQUEST.getMsg());
+        return respResult;
+    }
+
+    public void setRespCode(RespCode respCode) {
+        this.code = respCode.getCode();
+        this.msg = respCode.getMsg();
+    }
 
     public int getCode() {
         return code;
