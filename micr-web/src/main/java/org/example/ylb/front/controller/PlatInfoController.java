@@ -1,5 +1,6 @@
 package org.example.ylb.front.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.example.ylb.front.view.RespResult;
 import io.swagger.annotations.Api;
 import org.example.ylb.api.pojo.BaseInfo;
@@ -18,16 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlatInfoController extends BaseController {
 
     // 平台基本信息
+    @ApiOperation(value = "平台基本信息",notes = "注册人数、平均利率、累计成交金额")
     @GetMapping("/plat/info")
     public RespResult queryPlatBaseInfo() {
 
         // 调用远程服务
         BaseInfo baseInfo = platBaseInfoService.queryPlatBaseInfo();
 
-        RespResult respResult = new RespResult();
-        // 表示成功
-        respResult.setCode(200);
-        respResult.setMsg("查询平台信息成功");
+        RespResult respResult = RespResult.ok();
+
         respResult.setRetData(baseInfo);
 
         return respResult;
