@@ -218,4 +218,16 @@
 
     from b_prod_info
   </select>
+
+  <!-- 按产品类型分页查询 -->
+  <select id="selectAllByProductTypeLimit" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from b_prod_info
+
+    where product_type = #{prodType}
+
+    limit #{beginNo},#{pageSize}
+  </select>
 </mapper>
