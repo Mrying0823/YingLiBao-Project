@@ -1,7 +1,9 @@
 package org.example.ylb.dataservice.mapper;
 
 import org.example.ylb.api.model.IncomeRecord;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface IncomeRecordMapper {
     int deleteByPrimaryKey(Integer id);
 
