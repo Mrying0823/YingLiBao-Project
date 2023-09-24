@@ -1,9 +1,13 @@
 package org.example.ylb.api.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class IncomeRecord {
+/**
+ * @author 邓和颖
+ */
+public class IncomeRecord implements Serializable {
     private Integer id;
 
     private Integer uid;

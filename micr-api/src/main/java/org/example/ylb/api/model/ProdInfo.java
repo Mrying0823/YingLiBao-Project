@@ -1,9 +1,13 @@
 package org.example.ylb.api.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProdInfo {
+/**
+ * @author 邓和颖
+ */
+public class ProdInfo implements Serializable {
     private Integer id;
 
     private String productName;

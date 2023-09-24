@@ -1,8 +1,12 @@
 package org.example.ylb.api.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class FinanceAccount {
+/**
+ * @author 邓和颖
+ */
+public class FinanceAccount implements Serializable {
     private Integer id;
 
     private Integer uid;

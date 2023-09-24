@@ -1,8 +1,12 @@
 package org.example.ylb.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+/**
+ * @author 邓和颖
+ */
+public class User implements Serializable {
     private Integer id;
 
     private String phone;
