@@ -27,6 +27,13 @@
             <version>1.0.0</version>
         </dependency>
 
+        <!-- 添加公共类库依赖 -->
+        <dependency>
+            <groupId>org.example.ylb</groupId>
+            <artifactId>micr-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- Dubbo 起步依赖 -->
         <dependency>
             <groupId>org.apache.dubbo</groupId>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -26,6 +26,13 @@
 		<dependency>
 			<groupId>org.example.ylb</groupId>
 			<artifactId>micr-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<!-- 添加 micr-common 公共类库依赖 -->
+		<dependency>
+			<groupId>org.example.ylb</groupId>
+			<artifactId>micr-common</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 
