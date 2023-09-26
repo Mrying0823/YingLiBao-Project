@@ -31,4 +31,7 @@ public interface ProdInfoMapper {
     List<ProdInfo> selectAllByProductTypeLimit(@Param("prodType") Integer productType,
                                                @Param("beginNo") Integer beginNo,
                                                @Param("pageSize") Integer pageSize);
+
+    // 某个产品类型的记录总数
+    Integer selectCountByProductType(@Param("prodType") Integer productType);
 }

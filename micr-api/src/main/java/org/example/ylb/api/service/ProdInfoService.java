@@ -12,7 +12,10 @@ import java.util.List;
 public interface ProdInfoService {
 
     // 按产品类型分页查询
-    List<ProdInfo> queryAllByProductTypeLimit(Integer productType,Integer beginNo,Integer pageSize);
+    List<ProdInfo> queryAllByProductTypeLimit(Integer productType,Integer pageNo,Integer pageSize);
+
+    // 按产品类型查询产品记录总数
+    Integer queryRecordNumsByType(Integer productType);
 
     // 首个三个产品数据
     MultiProduct queryIndexPageProducts();

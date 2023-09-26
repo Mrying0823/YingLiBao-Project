@@ -228,6 +228,18 @@
 
     where product_type = #{prodType}
 
+    order by release_time desc
+
     limit #{beginNo},#{pageSize}
+  </select>
+
+  <!--  -->
+  <select id="selectCountByProductType" resultType="java.lang.Integer">
+    select
+    count(id) as count
+
+    from b_prod_info
+
+    where product_type = #{prodType}
   </select>
 </mapper>

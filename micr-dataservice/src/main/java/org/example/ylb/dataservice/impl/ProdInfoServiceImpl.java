@@ -33,7 +33,7 @@ public class ProdInfoServiceImpl implements ProdInfoService {
         List<ProdInfo> prodInfoList = new ArrayList<>();
         if(productType == 0 || productType == 1 || productType == 2) {
 
-            // 验证前端传来的参数是否正确
+            // 验证控制器传来的参数是否正确
             pageNo = CommonUtil.defaultPageNo(pageNo);
             pageSize = CommonUtil.defaultPageSize(pageSize);
 
@@ -41,6 +41,17 @@ public class ProdInfoServiceImpl implements ProdInfoService {
             prodInfoList = prodInfoMapper.selectAllByProductTypeLimit(productType, beginNo, pageSize);
         }
         return prodInfoList;
+    }
+
+    // 按产品类型查询产品记录总数
+    @Override
+    public Integer queryRecordNumsByType(Integer productType) {
+
+        Integer counts = 0;
+        if(productType == 0 || productType == 1 || productType == 2) {
+            counts = prodInfoMapper.selectCountByProductType(productType);
+        }
+        return counts;
     }
 
     // 首页的三个产品数据
