@@ -2,6 +2,8 @@ package org.example.ylb.front.view;
 
 import org.example.ylb.common.enums.RespCode;
 
+import java.util.List;
+
 /**
  * @author 邓和颖
  * @since 2023/9/24 1:13
@@ -18,6 +20,12 @@ public class RespResult {
 
     // 单个数据
     private Object retData;
+
+    // 集合数据
+    private List list;
+
+    // 分页
+    private PageInfo pageInfo;
 
     // 表示成功的 RespResult 对象
     public static RespResult ok() {
@@ -62,5 +70,21 @@ public class RespResult {
 
     public void setRetData(Object retData) {
         this.retData = retData;
+    }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
+    }
+
+    public PageInfo getPageInfo() {
+        return pageInfo;
+    }
+
+    public void setPageInfo(PageInfo pageInfo) {
+        this.pageInfo = pageInfo;
     }
 }
