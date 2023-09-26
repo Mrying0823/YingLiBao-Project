@@ -19,7 +19,7 @@ mybatis:
 # 配置 dubbo
 dubbo:
     registry:
-      address: zookeeper://localhost:2181
+      address: zookeeper://47.108.233.209:2181
 
     scan:
       base-packages: org.example.ylb.dataservice.service
