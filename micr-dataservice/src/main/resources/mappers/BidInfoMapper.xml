@@ -9,6 +9,12 @@
     <result column="bid_time" property="bidTime" jdbcType="TIMESTAMP" />
     <result column="bid_status" property="bidStatus" jdbcType="INTEGER" />
   </resultMap>
+
+  <resultMap id="InvestRankMap" type="org.example.ylb.api.pojo.invest.InvestRankInfo" >
+    <result column="phone" property="phone" />
+    <result column="money" property="money" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, prod_id, uid, bid_money, bid_time, bid_status
   </sql>
@@ -112,4 +118,17 @@
     from b_bid_info
   </select>
 
+  <!-- 投资排行榜 -->
+  <select id="selectInvestRank" resultMap="InvestRankMap">
+    select
+    sum(b.bid_money) as money, any_value(u.phone) as phone
+
+    from b_bid_info b
+
+    join u_user u on u.id = b.uid
+
+    group by u.phone
+
+    order by money desc
+  </select>
 </mapper>
