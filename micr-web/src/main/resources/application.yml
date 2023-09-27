@@ -4,6 +4,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  redis:
+    port: 6379
+    host: 47.108.233.209
 
 # 端口号
 server:
@@ -25,5 +28,7 @@ dubbo:
     check: false
     timeout: 50000
     retries: 0
+
+
 
 
