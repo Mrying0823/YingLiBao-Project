@@ -1,8 +1,11 @@
 package org.example.ylb.front.controller;
 
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.example.ylb.api.service.BidInfoService;
 import org.example.ylb.api.service.PlatBaseInfoService;
 import org.example.ylb.api.service.ProdInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * @author 邓和颖
@@ -12,6 +15,10 @@ public class BaseController {
 
     // 声明公共的方法、属性等
 
+    // redis
+    @Autowired
+    protected StringRedisTemplate stringRedisTemplate;
+
     // 平台基本信息服务
     @DubboReference(interfaceClass = PlatBaseInfoService.class,version = "1.0")
     protected PlatBaseInfoService platBaseInfoService;
@@ -20,4 +27,7 @@ public class BaseController {
     @DubboReference(interfaceClass = ProdInfoService.class,version = "1.0")
     protected ProdInfoService prodInfoService;
 
+    // 投资排行榜
+    @DubboReference(interfaceClass = BidInfoService.class,version = "1.0")
+    protected BidInfoService bidInfoService;
 }
