@@ -32,6 +32,6 @@ public interface ProdInfoMapper {
                                                @Param("beginNo") Integer beginNo,
                                                @Param("pageSize") Integer pageSize);
 
-    // 某个产品类型的记录总数
+    // 某类型产品的记录总数
     Integer selectCountByProductType(@Param("prodType") Integer productType);
 }

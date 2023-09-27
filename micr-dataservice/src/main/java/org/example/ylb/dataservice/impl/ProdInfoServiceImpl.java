@@ -2,7 +2,7 @@ package org.example.ylb.dataservice.impl;
 
 import org.apache.dubbo.config.annotation.DubboService;
 import org.example.ylb.api.model.ProdInfo;
-import org.example.ylb.api.pojo.MultiProduct;
+import org.example.ylb.api.pojo.product.MultiProduct;
 import org.example.ylb.api.service.ProdInfoService;
 import org.example.ylb.common.constants.YLBConstant;
 import org.example.ylb.common.utils.CommonUtil;
@@ -24,6 +24,28 @@ public class ProdInfoServiceImpl implements ProdInfoService {
     @Autowired
     public void setProdInfoMapper(ProdInfoMapper prodInfoMapper) {
         this.prodInfoMapper = prodInfoMapper;
+    }
+
+    // 首页的三个产品数据
+    @Override
+    public MultiProduct queryIndexPageProducts() {
+
+        MultiProduct multiProduct = new MultiProduct();
+
+        // 新手宝
+        List<ProdInfo> xinShouBaoList = prodInfoMapper.selectAllByProductTypeLimit(YLBConstant.PRODUCT_TYPE_XINSHOUBAO,0,1);
+
+        // 优选产品
+        List<ProdInfo> youXuanList = prodInfoMapper.selectAllByProductTypeLimit(YLBConstant.PRODUCT_TYPE_YOUXUAN,0,3);
+
+        // 散标产品
+        List<ProdInfo> sanBiaoList = prodInfoMapper.selectAllByProductTypeLimit(YLBConstant.PRODUCT_TYPE_SANBIAO,0,3);
+
+        multiProduct.setXinShouBao(xinShouBaoList);
+        multiProduct.setYouXuan(youXuanList);
+        multiProduct.setSanBiao(sanBiaoList);
+
+        return multiProduct;
     }
 
     // 按产品类型分页查询
@@ -52,27 +74,5 @@ public class ProdInfoServiceImpl implements ProdInfoService {
             counts = prodInfoMapper.selectCountByProductType(productType);
         }
         return counts;
-    }
-
-    // 首页的三个产品数据
-    @Override
-    public MultiProduct queryIndexPageProducts() {
-
-        MultiProduct multiProduct = new MultiProduct();
-
-        // 新手宝
-        List<ProdInfo> xinShouBaoList = prodInfoMapper.selectAllByProductTypeLimit(YLBConstant.PRODUCT_TYPE_XINSHOUBAO,0,1);
-
-        // 优选产品
-        List<ProdInfo> youXuanList = prodInfoMapper.selectAllByProductTypeLimit(YLBConstant.PRODUCT_TYPE_YOUXUAN,0,3);
-
-        // 散标产品
-        List<ProdInfo> sanBiaoList = prodInfoMapper.selectAllByProductTypeLimit(YLBConstant.PRODUCT_TYPE_SANBIAO,0,3);
-
-        multiProduct.setXinShouBao(xinShouBaoList);
-        multiProduct.setYouXuan(youXuanList);
-        multiProduct.setSanBiao(sanBiaoList);
-
-        return multiProduct;
     }
 }

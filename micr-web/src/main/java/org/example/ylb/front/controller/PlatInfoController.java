@@ -3,7 +3,7 @@ package org.example.ylb.front.controller;
 import io.swagger.annotations.ApiOperation;
 import org.example.ylb.front.view.RespResult;
 import io.swagger.annotations.Api;
-import org.example.ylb.api.pojo.BaseInfo;
+import org.example.ylb.api.pojo.plat.BaseInfo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

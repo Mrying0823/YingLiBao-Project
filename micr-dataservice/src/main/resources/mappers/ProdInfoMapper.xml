@@ -233,7 +233,7 @@
     limit #{beginNo},#{pageSize}
   </select>
 
-  <!--  -->
+  <!-- 某类型产品的记录总数 -->
   <select id="selectCountByProductType" resultType="java.lang.Integer">
     select
     count(id) as count

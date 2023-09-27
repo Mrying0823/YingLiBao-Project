@@ -1,7 +1,7 @@
 package org.example.ylb.dataservice.impl;
 
 import org.apache.dubbo.config.annotation.DubboService;
-import org.example.ylb.api.pojo.BaseInfo;
+import org.example.ylb.api.pojo.plat.BaseInfo;
 import org.example.ylb.api.service.PlatBaseInfoService;
 import org.example.ylb.dataservice.mapper.BidInfoMapper;
 import org.example.ylb.dataservice.mapper.ProdInfoMapper;

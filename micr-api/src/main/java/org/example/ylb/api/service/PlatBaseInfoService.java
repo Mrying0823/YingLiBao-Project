@@ -1,6 +1,6 @@
 package org.example.ylb.api.service;
 
-import org.example.ylb.api.pojo.BaseInfo;
+import org.example.ylb.api.pojo.plat.BaseInfo;
 
 /**
  * @author 邓和颖

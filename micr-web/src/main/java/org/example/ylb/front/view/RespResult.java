@@ -1,5 +1,6 @@
 package org.example.ylb.front.view;
 
+import org.example.ylb.api.pojo.product.PageInfo;
 import org.example.ylb.common.enums.RespCode;
 
 import java.util.List;

@@ -3,10 +3,10 @@ package org.example.ylb.front.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Api;
 import org.example.ylb.api.model.ProdInfo;
-import org.example.ylb.api.pojo.MultiProduct;
+import org.example.ylb.api.pojo.product.MultiProduct;
 import org.example.ylb.common.enums.RespCode;
 import org.example.ylb.common.utils.CommonUtil;
-import org.example.ylb.front.view.PageInfo;
+import org.example.ylb.api.pojo.product.PageInfo;
 import org.example.ylb.front.view.RespResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +25,7 @@ import java.util.List;
 @RestController
 public class ProductController extends BaseController{
 
+    // 首页三项产品数据
     @ApiOperation(value = "首页三类产品数据",notes = "新手宝产品、优选产品、散标产品")
     @GetMapping("/product/index")
     public RespResult queryIndexPageProducts() {

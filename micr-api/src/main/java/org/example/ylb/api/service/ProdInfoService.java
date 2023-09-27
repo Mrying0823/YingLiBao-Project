@@ -1,7 +1,7 @@
 package org.example.ylb.api.service;
 
 import org.example.ylb.api.model.ProdInfo;
-import org.example.ylb.api.pojo.MultiProduct;
+import org.example.ylb.api.pojo.product.MultiProduct;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ import java.util.List;
  */
 public interface ProdInfoService {
 
+    // 首个三个产品数据
+    MultiProduct queryIndexPageProducts();
+
     // 按产品类型分页查询
     List<ProdInfo> queryAllByProductTypeLimit(Integer productType,Integer pageNo,Integer pageSize);
 
     // 按产品类型查询产品记录总数
     Integer queryRecordNumsByType(Integer productType);
-
-    // 首个三个产品数据
-    MultiProduct queryIndexPageProducts();
 }
