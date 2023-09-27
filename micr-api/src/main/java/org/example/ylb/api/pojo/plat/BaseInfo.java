@@ -1,4 +1,4 @@
-package org.example.ylb.api.pojo;
+package org.example.ylb.api.pojo.plat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

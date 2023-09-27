@@ -1,4 +1,4 @@
-package org.example.ylb.api.pojo;
+package org.example.ylb.api.pojo.product;
 
 import org.example.ylb.api.model.ProdInfo;
 

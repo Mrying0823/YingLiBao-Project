@@ -1,4 +1,6 @@
-package org.example.ylb.front.view;
+package org.example.ylb.api.pojo.product;
+
+import java.io.Serializable;
 
 /**
  * @author 邓和颖
@@ -6,7 +8,7 @@ package org.example.ylb.front.view;
  */
 
 // 分页数据类
-public class PageInfo {
+public class PageInfo implements Serializable {
 
     // 页码
     private Integer pageNo;
