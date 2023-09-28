@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>axios-test</title>
+    <!-- 从根路径引入静态资源 -->
+    <script type="text/javascript" src="/js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="/js/axios.min.js"></script>
+</head>
+<script type="text/javascript">
+
+    $(function (){
+
+        axios.defaults.baseURL = "http://localhost:8001/api"
+
+        $("#getBtn").click(function () {
+            var url = "/user/query";
+
+            // 箭头函数 （参数列表） => （函数体）
+            axios.get(url).then(response => {
+               // then 是一个函数，相当于 ajax 的 success
+               alert(JSON.stringify(response.data,null,2));
+            }).catch(error => {
+                alert("请求错误");
+            }).finally( () =>
+            {
+                console.log("总是会执行");
+            });
+        });
+
+        $("#getBtn2").click(function () {
+            var url = "/user/get?id=2000300211&name=小邓";
+
+            // 箭头函数 （参数列表） => （函数体）
+            axios.get(url).then(response => {
+                // then 是一个函数，相当于 ajax 的 success
+                alert(JSON.stringify(response.data,null,2));
+            }).catch(error => {
+                alert("请求错误");
+            }).finally( () =>
+            {
+                console.log("总是会执行");
+            });
+        });
+
+        $("#getBtn3").click(function () {
+            var url = "/user/get";
+
+            // 箭头函数 （参数列表） => （函数体）
+            axios.get(url,{
+                params: {
+                    id: 2000300211,
+                    name: "Mrying"
+                }
+            }).then(response => {
+                // then 是一个函数，相当于 ajax 的 success
+                alert(JSON.stringify(response.data,null,2));
+            }).catch(error => {
+                alert("请求错误");
+            }).finally( () =>
+            {
+                console.log("总是会执行");
+            });
+        });
+        
+        $("#postBtn").click(function () {
+            var url = "/user/post";
+
+            axios.post(url,"id=2000300211&name=Mrying").then(response => {
+                // then 是一个函数，相当于 ajax 的 success
+                alert(JSON.stringify(response.data,null,2));
+            }).catch(error => {
+                alert("请求错误");
+            }).finally( () =>
+            {
+                console.log("总是会执行");
+            });
+        });
+
+        $("#postBtn2").click(function () {
+            var url = "/user/post2";
+
+            axios.post(url,{
+                id: 2000300211,
+                name: "邓和颖"
+            }).then(response => {
+                // then 是一个函数，相当于 ajax 的 success
+                alert(JSON.stringify(response.data,null,2));
+            }).catch(error => {
+                alert("请求错误");
+            }).finally( () =>
+            {
+                console.log("总是会执行");
+            });
+        });
+
+        $("#postBtn3").click(function () {
+            var url = "/user/post2";
+
+            axios({
+                url: url,
+                data: {
+                    id: 2000300211,
+                    name: "小颖"
+                },
+                method: "post"
+            }).then(response => {
+                // then 是一个函数，相当于 ajax 的 success
+                alert(JSON.stringify(response.data,null,2));
+            }).catch(error => {
+                alert("请求错误");
+            }).finally( () =>
+            {
+                console.log("总是会执行");
+            });
+        });
+    });
+
+</script>
+<body>
+    <button type="button" id="getBtn">发送 get 请求</button>
+    <button type="button" id="getBtn2">发送第二个 get 请求</button>
+    <button type="button" id="getBtn3">发送第三个 get 请求</button>
+    <br>
+    <button type="button" id="postBtn">发送 post 请求</button>
+    <button type="button" id="postBtn2">发送第二个 post 请求</button>
+    <button type="button" id="postBtn3">发送第三个 post 请求</button>
+</body>
+</html>
