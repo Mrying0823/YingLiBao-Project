@@ -11,7 +11,8 @@
 
     $(function (){
 
-        axios.defaults.baseURL = "http://localhost:8001/api"
+        axios.defaults.baseURL = "http://localhost:8001/api";
+        axios.defaults.timeout = 50000;
 
         $("#getBtn").click(function () {
             var url = "/user/query";
@@ -113,6 +114,34 @@
             {
                 console.log("总是会执行");
             });
+        });
+
+        // 请求拦截器
+        axios.interceptors.request.use(function (config) {
+
+            var token = "2000300211";
+
+            config.headers.Authorization = "Bearer "+token;
+
+            return config;
+        },
+        function (error) {
+            // 在请求拦截器中捕获并处理请求错误
+            return Promise.reject(error);
+        });
+
+        // 应答拦截器
+        axios.interceptors.response.use(function (config) {
+
+            var token = "2000300211";
+
+            config.headers.Authorization = "Bearer "+token;
+
+            return config;
+        },
+        function (error) {
+            // 在请求拦截器中捕获并处理请求错误
+            return Promise.reject(error);
         });
     });
 
