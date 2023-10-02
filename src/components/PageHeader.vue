@@ -7,9 +7,10 @@
             <img src="@/assets/image/logo.png" alt="">
           </a></h1>
           <ul class="public-head-list">
-            <li><a href="index.html" target="_blank">主页</a></li>
+            <!-- 使用 router-link 跳转至首页 -->
+            <li><router-link :to="{path: '/'}">首页</router-link></li>
             <li class="public-head-hover">
-              <a href="javascript:void(0);">我要投资</a>
+              <a href="javascript:void(0)">我要投资</a>
               <!--二级导航-->
               <div class="two-title">
                 <a href="javascript:">优选类产品</a>
@@ -31,8 +32,11 @@
 </template>
 
 <script>
+
 export default {
-  name: "PageHeader"
+  name: "PageHeader",
+  methods: {
+  }
 }
 </script>
 
