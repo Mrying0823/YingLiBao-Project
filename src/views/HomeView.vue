@@ -59,24 +59,25 @@
     <!--产品-->
     <div class="content">
       <h2 class="public-title"><span>新手宝</span></h2>
-      <div class="new-user">
+      <!-- v-for 遍历 -->
+      <div class="new-user" v-for="product in xinShouBao" :key="product.id">
         <div class="new-user-sm">
-          <span>1000.0元起投</span>
-          <span>投资最高限额10000.0元</span>
+          <span>{{ product.bidMinLimit }}元起投</span>
+          <span>投资最高限额{{ product.bidMaxLimit }}元</span>
           <span>当日即系</span>
         </div>
         <div class="new-user-number">
           <ul>
             <li>
-              <p><b>4.9</b>%</p>
+              <p><b>{{ product.rate }}</b>%</p>
               <span>历史年化收益率</span>
             </li>
             <li>
-              <p><b>1</b>个月</p>
+              <p><b>{{ product.cycle }}</b>天</p>
               <span>投资周期</span>
             </li>
             <li>
-              <p><b>250000</b>元</p>
+              <p><b>{{ product.leftProductMoney }}</b>元</p>
               <span>余利可投资金额</span>
             </li>
           </ul>
@@ -85,150 +86,60 @@
         <span class="new-tag">新用户专享</span>
       </div>
 
-      <h2 class="public-title"><span>优选产品</span> <a href="list.html" target="_blank" class="public-title-more">查看更多产品>></a></h2>
+      <!-- 通过 url 传递参数 -->
+      <h2 class="public-title"><span>优选产品</span> <router-link :to="{ path: '/productList', query: { productType: 1 } }" class="public-title-more">查看更多产品>></router-link></h2>
       <ul class="preferred-select clearfix">
-        <li>
+        <li v-for="(product,index) in youXuan" :key="product.id">
           <h3 class="preferred-select-title">
-            <span>满月宝</span>
-            <img src="@/assets/image/1-bg1.jpg" alt="">
+            <span>{{ product.productName }}</span>
+            <!-- 这里不能使用字符拼接 -->
+            <img src="@/assets/image/1-bg1.jpg" alt="" v-if="index === 0">
+            <img src="@/assets/image/1-bg2.jpg" alt="" v-else-if="index === 1">
+            <img src="@/assets/image/1-bg3.jpg" alt="" v-else>
           </h3>
           <div class="preferred-select-number">
-            <p><b>4.9</b>%</p>
+            <p><b>{{ product.rate }}</b>%</p>
             <span>历史年化收益率</span>
           </div>
           <div class="preferred-select-date">
             <div>
               <span>投资周期</span>
-              <p><b>1</b>个月</p>
+              <p><b>{{ product.cycle }}</b>个月</p>
             </div>
             <div>
               <span>余利可投资金额</span>
-              <p><b>250000.0</b>元</p>
+              <p><b>{{ product.leftProductMoney }}</b>元</p>
             </div>
           </div>
           <p class="preferred-select-txt">
-            优选计划项目，投资回报周期1个月，起点低，适合短期资金周转、对流动性要求高的投资人。
-          </p>
-          <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
-        </li>
-        <li>
-          <h3 class="preferred-select-title">
-            <span>季度宝</span>
-            <img src="@/assets/image/1-bg2.jpg" alt="">
-          </h3>
-          <div class="preferred-select-number">
-            <p><b>6.2</b>%</p>
-            <span>历史年化收益率</span>
-          </div>
-          <div class="preferred-select-date">
-            <div>
-              <span>投资周期</span>
-              <p><b>1</b>个月</p>
-            </div>
-            <div>
-              <span>余利可投资金额</span>
-              <p class="preferred-select-date-no"><b>0.0</b>元</p>
-            </div>
-          </div>
-          <p class="preferred-select-txt">
-            优选计划项目，投资回报周期1个月，起点低，适合短期资金周转、对流动性要求高的投资人。
-          </p>
-          <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
-        </li>
-        <li>
-          <h3 class="preferred-select-title">
-            <span>双季宝</span>
-            <img src="@/assets/image/1-bg3.jpg" alt="">
-          </h3>
-          <div class="preferred-select-number">
-            <p><b>7.1</b>%</p>
-            <span>历史年化收益率</span>
-          </div>
-          <div class="preferred-select-date">
-            <div>
-              <span>投资周期</span>
-              <p><b>1</b>个月</p>
-            </div>
-            <div>
-              <span>余利可投资金额</span>
-              <p><b>250000.0</b>元</p>
-            </div>
-          </div>
-          <p class="preferred-select-txt">
-            优选计划项目，投资回报周期1个月，起点低，适合短期资金周转、对流动性要求高的投资人。
+            优选计划项目，投资回报周期{{product.cycle}}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
           <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
         </li>
       </ul>
 
-      <h2 class="public-title"><span>散标产品</span> <a href="list.html" target="_blank" class="public-title-more">查看更多产品>></a></h2>
+      <h2 class="public-title"><span>散标产品</span> <router-link :to="{ path: '/productList', query: { productType: 2 } }" class="public-title-more">查看更多产品>></router-link></h2>
       <ul class="preferred-select clearfix">
-        <li>
-          <h3 class="preferred-select-title1">个人信用消费借款
+        <li v-for="product in sanBiao" :key="product.id">
+          <h3 class="preferred-select-title1">{{ product.productName }}
             <span>散标</span>
           </h3>
           <div class="preferred-select-number">
-            <p><b>4.9</b>%</p>
+            <p><b>{{ product.rate }}</b>%</p>
             <span>历史年化收益率</span>
           </div>
           <div class="preferred-select-date">
             <div>
               <span>投资周期</span>
-              <p><b>1</b>个月</p>
+              <p><b>{{ product.cycle }}</b>个月</p>
             </div>
             <div>
               <span>余利可投资金额</span>
-              <p><b>250000.0</b>元</p>
+              <p><b>{{ product.leftProductMoney }}</b>元</p>
             </div>
           </div>
           <p class="preferred-select-txt">
-            优选计划项目，投资回报周期1个月，起点低，适合短期资金周转、对流动性要求高的投资人。
-          </p>
-          <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
-        </li>
-        <li>
-          <h3 class="preferred-select-title1">个人信用消费借款
-            <span>散标</span>
-          </h3>
-          <div class="preferred-select-number">
-            <p><b>6.2</b>%</p>
-            <span>历史年化收益率</span>
-          </div>
-          <div class="preferred-select-date">
-            <div>
-              <span>投资周期</span>
-              <p><b>1</b>个月</p>
-            </div>
-            <div>
-              <span>余利可投资金额</span>
-              <p class="preferred-select-date-no"><b>0.0</b>元</p>
-            </div>
-          </div>
-          <p class="preferred-select-txt">
-            优选计划项目，投资回报周期1个月，起点低，适合短期资金周转、对流动性要求高的投资人。
-          </p>
-          <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
-        </li>
-        <li>
-          <h3 class="preferred-select-title1">个人信用消费借款
-            <span>散标</span>
-          </h3>
-          <div class="preferred-select-number">
-            <p><b>7.1</b>%</p>
-            <span>历史年化收益率</span>
-          </div>
-          <div class="preferred-select-date">
-            <div>
-              <span>投资周期</span>
-              <p><b>1</b>个月</p>
-            </div>
-            <div>
-              <span>余利可投资金额</span>
-              <p><b>250000.0</b>元</p>
-            </div>
-          </div>
-          <p class="preferred-select-txt">
-            优选计划项目，投资回报周期1个月，起点低，适合短期资金周转、对流动性要求高的投资人。
+            散标计划项目，投资回报周期{{product.cycle}}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
           <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
         </li>
@@ -277,7 +188,7 @@
 
 import PageHeader from "@/components/PageHeader";
 import PageFooter from "@/components/PageFooter";
-import axios from "axios";
+import {toGet} from "@/axios/httpRequest";
 
 export default {
   name: 'HomeView',
@@ -289,16 +200,75 @@ export default {
     // 返回一个包含数据属性的对象，这些属性将在组件的实例化过程中添加到组件实例中
     return {
       platInfo: {historyAvgRate: 0.00,sumBidMoney: 0.00,registerUsers: 0},
+      xinShouBao: [{
+        id: 0,
+        productName: "",
+        rate: 0.00,
+        cycle: 0,
+        releaseTime: 0,
+        productType: 0,
+        productNo: "",
+        productMoney: 0.00,
+        leftProductMoney: 0.00,
+        bidMinLimit: 0.00,
+        bidMaxLimit: 0.00,
+        productStatus: 0,
+        productFullTime: "",
+        productDesc: "",
+        version: 0
+      }],
+      youXuan: [{
+        id: 0,
+        productName: "",
+        rate: 0.00,
+        cycle: 0,
+        releaseTime: 0,
+        productType: 0,
+        productNo: "",
+        productMoney: 0.00,
+        leftProductMoney: 0.00,
+        bidMinLimit: 0.00,
+        bidMaxLimit: 0.00,
+        productStatus: 0,
+        productFullTime: "",
+        productDesc: "",
+        version: 0
+      }],
+      sanBiao: [{
+        id: 0,
+        productName: "",
+        rate: 0.00,
+        cycle: 0,
+        releaseTime: 0,
+        productType: 0,
+        productNo: "",
+        productMoney: 0.00,
+        leftProductMoney: 0.00,
+        bidMinLimit: 0.00,
+        bidMaxLimit: 0.00,
+        productStatus: 0,
+        productFullTime: "",
+        productDesc: "",
+        version: 0
+      }]
     }
   },
   mounted() {
     // 页面加载至浏览器，执行 mounted
     // 向服务器发起请求，获取数据，更新页面
-    axios.get("http://localhost:8000/api/v1/plat/info").then(response => {
-
+    toGet("/v1/plat/info",{}).then(response => {
       // 如果 response 不为空
       if(response) {
         this.platInfo = response.data.retData;
+      }
+    });
+
+    toGet("/v1/product/index",{}).then(response => {
+      // 如果 response 不为空
+      if(response) {
+        this.xinShouBao = response.data.retData.xinShouBao;
+        this.youXuan = response.data.retData.youXuan;
+        this.sanBiao = response.data.retData.sanBiao;
       }
     });
   }
