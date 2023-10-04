@@ -43,7 +43,7 @@
           <p class="preferred-select-txt">
             优选计划项目，投资回报周期{{ product.cycle }}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
-          <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
+          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
         </li>
       </ul>
 
@@ -51,10 +51,10 @@
       <div class="page_box">
         <ul class="pagination">
           <li><a href="javascript:void(0)" @click="firstPage()" style="color: red">首页</a></li>
-          <li><a href="javascript:void(0) ">上一页</a></li>
+          <li><a href="javascript:void(0)" @click="prePage()">上一页</a></li>
           <li class="active"><span>{{pageInfo.pageNo}}</span></li>
-          <li><a href="">下一页</a></li>
-          <li><a href="">尾页</a></li>
+          <li><a href="javascript:void(0)" @click="nextPage()">下一页</a></li>
+          <li><a href="javascript:void(0)" @click="lastPage()" style="color: red">尾页</a></li>
           <li class="totalPages"><span>共{{ pageInfo.totalPage }}页</span></li>
         </ul>
       </div>
@@ -78,6 +78,7 @@ export default {
     PageHeader,
     PageFooter
   },
+
   data() {
     return {
       // 投资排行榜
@@ -114,28 +115,24 @@ export default {
       }
     }
   },
-  mounted() {
-    // 获取投资排行榜数据
-    toGet("/v1/invest/rank").then(response => {
-      if(response) {
-        this.investRank = response.data.list;
-      }
-    });
 
-    // 获取产品列表数据
+  mounted() {
     // route 不是 router
-    toGet("/v1/product/list", {productType: this.$route.query.productType}).then(response => {
-      if(response) {
-        this.productList = response.data.list;
-        this.pageInfo = response.data.pageInfo;
-      }
-    });
+    this.initPage(this.$route.query.productType);
   },
+
   methods: {
-    switchPage(pageNo,pageSize) {
+    // 初始化界面，导航栏跳转使用
+    initPage(productType) {
+      // 获取投资排行榜数据
+      toGet("/v1/invest/rank").then(response => {
+        if(response) {
+          this.investRank = response.data.list;
+        }
+      });
+
       // 获取产品列表数据
-      // route 不是 router
-      toGet("/v1/product/list", {productType: this.$route.query.productType,pageNo: pageNo,pageSize: pageSize}).then(response => {
+      toGet("/v1/product/list", {productType}).then(response => {
         if(response) {
           this.productList = response.data.list;
           this.pageInfo = response.data.pageInfo;
@@ -143,6 +140,26 @@ export default {
       });
     },
 
+    switchPage(pageNo,pageSize) {
+      // 获取产品列表数据
+      // route 不是 router
+      toGet("/v1/product/list", {productType: this.$route.query.productType,pageNo: pageNo,pageSize: pageSize}).then(response => {
+        if(response) {
+          this.productList = response.data.list;
+          this.pageInfo = response.data.pageInfo;
+          this.scrollToTop();
+        }
+      });
+    },
+
+    // 重置滚动条
+    scrollToTop() {
+      this.$nextTick(() => {
+        window.scrollTo(0, 0);
+      });
+    },
+
+    // 首页
     firstPage() {
       if(this.pageInfo.pageNo === 1) {
         this.$message({
@@ -154,6 +171,57 @@ export default {
         this.switchPage(1,9);
       }
     },
+
+    // 尾页
+    lastPage() {
+      if(this.pageInfo.pageNo === this.pageInfo.totalPage) {
+        this.$message({
+          type: "info",
+          center: "true",
+          message: "当前为最后一页"
+        });
+      }else {
+        this.switchPage(this.pageInfo.totalPage,9);
+      }
+    },
+
+    // 上一页
+    prePage() {
+      if(this.pageInfo.pageNo <= 1) {
+        this.$message({
+          type: "info",
+          center: "true",
+          message: "当前为第 1 页"
+        });
+      }else {
+        this.switchPage(this.pageInfo.pageNo-1,9);
+      }
+    },
+
+    // 下一页
+    nextPage() {
+      if(this.pageInfo.pageNo >= this.pageInfo.totalPage) {
+        this.$message({
+          type: "info",
+          center: "true",
+          message: "当前为最后一页"
+        });
+      }else {
+        this.switchPage(this.pageInfo.pageNo+1,9);
+      }
+    },
+  },
+
+  // 监听 productType 的变化
+  watch: {
+    // 监听路由参数的变化
+    "$route.query.productType": {
+      // 立即触发一次
+      immediate: true,
+      handler(newProductType) {
+        this.initPage(newProductType);
+      }
+    }
   }
 }
 </script>

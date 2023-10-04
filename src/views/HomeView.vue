@@ -81,7 +81,7 @@
               <span>余利可投资金额</span>
             </li>
           </ul>
-          <a href="details.html" target="_blank" class="new-user-btn">立即投资</a>
+          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="new-user-btn">立即投资</router-link>
         </div>
         <span class="new-tag">新用户专享</span>
       </div>
@@ -114,7 +114,7 @@
           <p class="preferred-select-txt">
             优选计划项目，投资回报周期{{product.cycle}}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
-          <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
+          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
         </li>
       </ul>
 
@@ -141,7 +141,7 @@
           <p class="preferred-select-txt">
             散标计划项目，投资回报周期{{product.cycle}}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
-          <a href="javascript:" target="_blank" class="preferred-select-btn">立即投资</a>
+          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
         </li>
       </ul>
 

@@ -20,7 +20,7 @@ import 'element-plus/dist/index.css'
 const app = createApp(App);
 
 // 安装 Element Plus 插件
-app.use(ElementPlus, { size: 'small', zIndex: 3000 })
+app.use(ElementPlus)
 // 使用 Vue Router
 app.use(router);
 // 挂载到 DOM
