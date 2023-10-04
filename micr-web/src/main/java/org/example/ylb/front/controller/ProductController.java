@@ -3,17 +3,22 @@ package org.example.ylb.front.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Api;
 import org.example.ylb.api.model.ProdInfo;
+import org.example.ylb.api.pojo.invest.InvestProdInfo;
+import org.example.ylb.api.pojo.invest.InvestRankInfo;
 import org.example.ylb.api.pojo.product.MultiProduct;
+import org.example.ylb.common.constants.RedisKey;
 import org.example.ylb.common.enums.RespCode;
 import org.example.ylb.common.utils.CommonUtil;
 import org.example.ylb.api.pojo.product.PageInfo;
+import org.example.ylb.common.utils.DateUtil;
 import org.example.ylb.front.view.RespResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author 邓和颖
@@ -69,6 +74,41 @@ public class ProductController extends BaseController{
                 respResult.setList(prodInfoList);
             } else {
                 respResult.setCode(RespCode.NOT_FOUND.getCode());
+            }
+        }
+
+        return respResult;
+    }
+
+    // 根据产品 id 查询产品详细信息和该产品的投资记录
+    @ApiOperation(value = "产品详细信息",notes = "根据产品 id 查询产品详细信息和投资记录")
+    @GetMapping("/product/detail")
+    public RespResult queryDetailById(@RequestParam("productId") Integer id) {
+        RespResult respResult = RespResult.fail();
+
+        ProdInfo prodDetail = null;
+        List<InvestProdInfo> investInfoList = new ArrayList<>();
+
+        if(id != null && id > 0) {
+            prodDetail = prodInfoService.queryDetailById(id);
+
+            // 如果产品不存在，那么不应查询投资记录
+            if(prodDetail != null) {
+                investInfoList = bidInfoService.queryInvestInfoByProductId(id);
+
+                investInfoList = investInfoList.stream().peek(info -> {
+                    // 对手机号进行敏感处理
+                    info.setPhone(CommonUtil.maskPhone(info.getPhone()));
+
+                    // 格式化日期时间
+                    info.setBidTime(DateUtil.reformatDateTime(info.getBidTime()));
+                }).collect(Collectors.toList());
+
+                respResult = RespResult.ok();
+                respResult.setRetData(prodDetail);
+                respResult.setList(investInfoList);
+            }else {
+                respResult = RespResult.notFound();
             }
         }
 
