@@ -1,23 +1,23 @@
 package org.example.ylb.front.controller;
 
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.example.ylb.api.model.ProdInfo;
 import org.example.ylb.api.pojo.invest.InvestProdInfo;
-import org.example.ylb.api.pojo.invest.InvestRankInfo;
 import org.example.ylb.api.pojo.product.MultiProduct;
-import org.example.ylb.common.constants.RedisKey;
+import org.example.ylb.api.pojo.product.PageInfo;
 import org.example.ylb.common.enums.RespCode;
 import org.example.ylb.common.utils.CommonUtil;
-import org.example.ylb.api.pojo.product.PageInfo;
 import org.example.ylb.common.utils.DateUtil;
 import org.example.ylb.front.view.RespResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +46,11 @@ public class ProductController extends BaseController{
 
     // 按产品类型分页查询
     @ApiOperation(value = "产品列表",notes = "根据产品类型分页查询产品记录总数")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "productType",value = "产品类型"),
+            @ApiImplicitParam(name = "pageNo",value = "页码"),
+            @ApiImplicitParam(name = "pageSize",value = "页面大小")
+    })
     @GetMapping("/product/list")
     public RespResult queryProductByProductType(@RequestParam("productType") Integer productType,
                                                 @RequestParam(value = "pageNo",required = false,defaultValue = "1") Integer pageNo,
@@ -82,12 +87,13 @@ public class ProductController extends BaseController{
 
     // 根据产品 id 查询产品详细信息和该产品的投资记录
     @ApiOperation(value = "产品详细信息",notes = "根据产品 id 查询产品详细信息和投资记录")
+    @ApiImplicitParam(name = "productId",value = "产品 Id")
     @GetMapping("/product/detail")
     public RespResult queryDetailById(@RequestParam("productId") Integer id) {
         RespResult respResult = RespResult.fail();
 
-        ProdInfo prodDetail = null;
-        List<InvestProdInfo> investInfoList = new ArrayList<>();
+        ProdInfo prodDetail;
+        List<InvestProdInfo> investInfoList;
 
         if(id != null && id > 0) {
             prodDetail = prodInfoService.queryDetailById(id);

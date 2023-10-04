@@ -79,6 +79,11 @@ public class ProdInfoServiceImpl implements ProdInfoService {
     // 根据产品 id 查询产品详细信息
     @Override
     public ProdInfo queryDetailById(Integer id) {
-        return prodInfoMapper.selectDetailById(id);
+
+        ProdInfo prodDetail = null;
+        if(id != null && id > 0) {
+            prodDetail = prodInfoMapper.selectDetailById(id);
+        }
+        return prodDetail;
     }
 }
