@@ -34,4 +34,7 @@ public interface ProdInfoMapper {
 
     // 某类型产品的记录总数
     Integer selectCountByProductType(@Param("prodType") Integer productType);
+
+    // 根据产品 id 查询产品详细信息
+    ProdInfo selectDetailById(Integer id);
 }

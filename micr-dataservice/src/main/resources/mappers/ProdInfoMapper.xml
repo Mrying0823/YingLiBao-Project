@@ -242,4 +242,14 @@
 
     where product_type = #{prodType}
   </select>
+
+  <!-- 根据产品 id 查询产品详细信息 -->
+  <select id="selectDetailById" resultType="org.example.ylb.api.model.ProdInfo">
+    select
+    <include refid="Base_Column_List" />
+
+    from b_prod_info
+
+    where id = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>

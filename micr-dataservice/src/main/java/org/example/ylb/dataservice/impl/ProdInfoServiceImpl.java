@@ -75,4 +75,10 @@ public class ProdInfoServiceImpl implements ProdInfoService {
         }
         return counts;
     }
+
+    // 根据产品 id 查询产品详细信息
+    @Override
+    public ProdInfo queryDetailById(Integer id) {
+        return prodInfoMapper.selectDetailById(id);
+    }
 }
