@@ -5,7 +5,7 @@ Spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.108.233.209:3306/ylbdb?userUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.56.104:3306/ylbdb?userUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: mrying
     password: 123456
 
@@ -19,7 +19,7 @@ mybatis:
 # 配置 dubbo
 dubbo:
     registry:
-      address: zookeeper://47.108.233.209:2181
+      address: zookeeper://192.168.56.104:2181
 
     scan:
       base-packages: org.example.ylb.dataservice.service

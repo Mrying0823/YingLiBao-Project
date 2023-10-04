@@ -6,7 +6,7 @@ spring:
       matching-strategy: ant_path_matcher
   redis:
     port: 6379
-    host: 47.108.233.209
+    host: 192.168.56.104
 
 # 端口号
 server:
@@ -21,7 +21,8 @@ server:
 # 配置 dubbo
 dubbo:
   registry:
-    address: zookeeper://47.108.233.209:2181
+    address: zookeeper://192.168.56.104:2181
+    timeout: 50000
   scan:
     base-packages: org.example.ylb.front
   consumer:
