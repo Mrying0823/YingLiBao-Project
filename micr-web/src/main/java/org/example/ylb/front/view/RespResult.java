@@ -44,6 +44,13 @@ public class RespResult {
         return respResult;
     }
 
+    public static RespResult notFound() {
+        RespResult respResult = new RespResult();
+        respResult.setCode(RespCode.NOT_FOUND.getCode());
+        respResult.setMsg(RespCode.NOT_FOUND.getMsg());
+        return respResult;
+    }
+
     public void setRespCode(RespCode respCode) {
         this.code = respCode.getCode();
         this.msg = respCode.getMsg();
