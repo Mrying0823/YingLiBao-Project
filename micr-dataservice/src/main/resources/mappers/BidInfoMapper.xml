@@ -15,6 +15,13 @@
     <result column="money" property="money" />
   </resultMap>
 
+  <resultMap id="InvestInfoMap" type="org.example.ylb.api.pojo.invest.InvestProdInfo" >
+    <id column="id" property="id" />
+    <result column="phone" property="phone" />
+    <result column="bid_time" property="bidTime" />
+    <result column="bid_money" property="bidMoney" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, prod_id, uid, bid_money, bid_time, bid_status
   </sql>
@@ -130,5 +137,21 @@
     group by u.phone
 
     order by money desc
+  </select>
+
+  <!-- 根据产品 id 查询该产品的投资记录 -->
+  <select id="selectInvestInfoByProductId" resultMap="InvestInfoMap" parameterType="java.lang.Integer">
+    select
+    bid.id,u.phone,bid.bid_money,bid.bid_time
+
+    from b_bid_info bid
+
+    join u_user u on u.id = bid.uid
+
+    where bid.prod_id = #{prodId,jdbcType=INTEGER}
+
+    order by bid.bid_time desc
+
+    limit 0,5
   </select>
 </mapper>

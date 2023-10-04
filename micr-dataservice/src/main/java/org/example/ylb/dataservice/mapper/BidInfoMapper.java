@@ -1,6 +1,7 @@
 package org.example.ylb.dataservice.mapper;
 
 import org.example.ylb.api.model.BidInfo;
+import org.example.ylb.api.pojo.invest.InvestProdInfo;
 import org.example.ylb.api.pojo.invest.InvestRankInfo;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,7 @@ public interface BidInfoMapper {
 
     // 投资排行榜
     List<InvestRankInfo> selectInvestRank();
+
+    // 根据产品 id 查询该产品的投资记录
+    List<InvestProdInfo> selectInvestInfoByProductId(Integer productId);
 }
