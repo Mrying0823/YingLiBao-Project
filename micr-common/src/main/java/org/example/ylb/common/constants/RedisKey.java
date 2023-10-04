@@ -8,4 +8,7 @@ public class RedisKey {
 
     // 投资排行榜
     public static final String KEY_INVEST_RANK = "INVEST:RANK";
+
+    // 用户手机
+    public static final String KEY_USER_PHONE = "USER:PHONE";
 }

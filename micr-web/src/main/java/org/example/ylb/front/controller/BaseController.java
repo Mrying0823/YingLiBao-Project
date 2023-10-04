@@ -4,6 +4,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.example.ylb.api.service.BidInfoService;
 import org.example.ylb.api.service.PlatBaseInfoService;
 import org.example.ylb.api.service.ProdInfoService;
+import org.example.ylb.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -27,7 +28,11 @@ public class BaseController {
     @DubboReference(interfaceClass = ProdInfoService.class,version = "1.0")
     protected ProdInfoService prodInfoService;
 
-    // 投资排行榜
+    // 投资服务
     @DubboReference(interfaceClass = BidInfoService.class,version = "1.0")
     protected BidInfoService bidInfoService;
+
+    // 用户服务
+    @DubboReference(interfaceClass = UserService.class,version = "1.0")
+    protected UserService userService;
 }

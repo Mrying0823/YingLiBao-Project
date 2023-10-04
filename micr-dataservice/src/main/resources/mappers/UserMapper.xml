@@ -11,6 +11,7 @@
     <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
     <result column="header_image" property="headerImage" jdbcType="VARCHAR" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     id, phone, login_password, name, id_card, add_time, last_login_time, header_image
   </sql>
@@ -132,5 +133,15 @@
     count(*) as ct
 
     from u_user
+  </select>
+
+  <!-- 查询用户表中所有的手机号 -->
+  <select id="selectUserPhone" resultType="java.lang.String">
+    select
+    phone
+
+    from u_user
+
+    group by phone
   </select>
 </mapper>

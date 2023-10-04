@@ -3,6 +3,8 @@ package org.example.ylb.dataservice.mapper;
 import org.example.ylb.api.model.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author 邓和颖
  */
@@ -22,4 +24,7 @@ public interface UserMapper {
 
     // 统计注册人数
     int selectCountUser();
+
+    // 查询用户表中所有的手机号
+    List<String> selectUserPhone();
 }
