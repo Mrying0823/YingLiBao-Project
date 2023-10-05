@@ -17,10 +17,6 @@ public class SmsConfiguration {
 
     private String method;
 
-    private String appkey;
-
-    private String appSecret;
-
     private String appCode;
 
     private String smsSignId;
@@ -49,22 +45,6 @@ public class SmsConfiguration {
 
     public void setMethod(String method) {
         this.method = method;
-    }
-
-    public String getAppkey() {
-        return appkey;
-    }
-
-    public void setAppkey(String appkey) {
-        this.appkey = appkey;
-    }
-
-    public String getAppSecret() {
-        return appSecret;
-    }
-
-    public void setAppSecret(String appSecret) {
-        this.appSecret = appSecret;
     }
 
     public String getAppCode() {
