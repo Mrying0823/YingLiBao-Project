@@ -5,7 +5,7 @@ import org.example.ylb.api.model.ProdInfo;
 import org.example.ylb.api.pojo.product.MultiProduct;
 import org.example.ylb.api.service.ProdInfoService;
 import org.example.ylb.common.constants.YLBConstant;
-import org.example.ylb.common.utils.CommonUtil;
+import org.example.ylb.common.utils.CommonUtils;
 import org.example.ylb.dataservice.mapper.ProdInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -56,8 +56,8 @@ public class ProdInfoServiceImpl implements ProdInfoService {
         if(productType == 0 || productType == 1 || productType == 2) {
 
             // 验证控制器传来的参数是否正确
-            pageNo = CommonUtil.defaultPageNo(pageNo);
-            pageSize = CommonUtil.defaultPageSize(pageSize);
+            pageNo = CommonUtils.defaultPageNo(pageNo);
+            pageSize = CommonUtils.defaultPageSize(pageSize);
 
             Integer beginNo = (pageNo-1)*pageSize;
             prodInfoList = prodInfoMapper.selectAllByProductTypeLimit(productType, beginNo, pageSize);

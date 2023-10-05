@@ -1,9 +1,7 @@
 package org.example.ylb.dataservice.impl;
 
 import org.apache.dubbo.config.annotation.DubboService;
-import org.example.ylb.api.model.User;
 import org.example.ylb.api.service.UserService;
-import org.example.ylb.common.utils.CommonUtil;
 import org.example.ylb.dataservice.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

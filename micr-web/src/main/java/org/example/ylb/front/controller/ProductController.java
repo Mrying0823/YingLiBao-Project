@@ -9,8 +9,8 @@ import org.example.ylb.api.pojo.invest.InvestProdInfo;
 import org.example.ylb.api.pojo.product.MultiProduct;
 import org.example.ylb.api.pojo.product.PageInfo;
 import org.example.ylb.common.enums.RespCode;
-import org.example.ylb.common.utils.CommonUtil;
-import org.example.ylb.common.utils.DateUtil;
+import org.example.ylb.common.utils.CommonUtils;
+import org.example.ylb.common.utils.DateUtils;
 import org.example.ylb.front.view.RespResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,8 +61,8 @@ public class ProductController extends BaseController{
         if(productType != null && (productType == 0 || productType == 1 || productType == 2)) {
 
             // 验证前端传来的参数是否正确
-            pageNo = CommonUtil.defaultPageNo(pageNo);
-            pageSize = CommonUtil.defaultPageSize(pageSize);
+            pageNo = CommonUtils.defaultPageNo(pageNo);
+            pageSize = CommonUtils.defaultPageSize(pageSize);
 
             // 根据产品类型查询产品记录总数
             Integer recordNums = prodInfoService.queryRecordNumsByType(productType);
@@ -104,10 +104,10 @@ public class ProductController extends BaseController{
 
                 investInfoList = investInfoList.stream().peek(info -> {
                     // 对手机号进行敏感处理
-                    info.setPhone(CommonUtil.maskPhone(info.getPhone()));
+                    info.setPhone(CommonUtils.maskPhone(info.getPhone()));
 
                     // 格式化日期时间
-                    info.setBidTime(DateUtil.reformatDateTime(info.getBidTime()));
+                    info.setBidTime(DateUtils.reformatDateTime(info.getBidTime()));
                 }).collect(Collectors.toList());
 
                 respResult = RespResult.ok();

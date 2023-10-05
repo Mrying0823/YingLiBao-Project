@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.example.ylb.common.constants.RedisKey;
-import org.example.ylb.common.utils.CommonUtil;
+import org.example.ylb.common.utils.CommonUtils;
 import org.example.ylb.front.view.RespResult;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +32,7 @@ public class UserController extends BaseController {
         RespResult respResult = RespResult.fail();
 
         // 检验手机号格式是否正确
-        if(CommonUtil.checkPhone(phone)) {
+        if(CommonUtils.checkPhone(phone)) {
 
             // 创建 Redis Set 实例，可执行与 set 相关的操作
             SetOperations<String,String> set = stringRedisTemplate.opsForSet();
