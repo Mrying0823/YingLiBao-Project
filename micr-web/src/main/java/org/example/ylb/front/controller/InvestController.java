@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.example.ylb.api.pojo.invest.InvestRankInfo;
 import org.example.ylb.common.constants.RedisKey;
-import org.example.ylb.common.utils.CommonUtil;
+import org.example.ylb.common.utils.CommonUtils;
 import org.example.ylb.front.view.RespResult;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +42,7 @@ public class InvestController extends BaseController {
 
             sets.forEach(tuple -> {
                 // 手机号、投资金额
-                rankInfoList.add(new InvestRankInfo(CommonUtil.maskPhone(tuple.getValue()),tuple.getScore()));
+                rankInfoList.add(new InvestRankInfo(CommonUtils.maskPhone(tuple.getValue()),tuple.getScore()));
             });
 
             respResult.setList(rankInfoList);
@@ -61,7 +61,7 @@ public class InvestController extends BaseController {
             stringRedisTemplate.expire(RedisKey.KEY_INVEST_RANK,1, TimeUnit.HOURS);
 
             // 对手机号进行敏感处理
-            rank.setPhone(CommonUtil.maskPhone(rank.getPhone()));
+            rank.setPhone(CommonUtils.maskPhone(rank.getPhone()));
         }).collect(Collectors.toList());
 
         respResult.setList(rankInfoList);
