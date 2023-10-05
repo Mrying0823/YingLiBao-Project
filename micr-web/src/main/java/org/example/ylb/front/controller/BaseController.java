@@ -5,6 +5,7 @@ import org.example.ylb.api.service.BidInfoService;
 import org.example.ylb.api.service.PlatBaseInfoService;
 import org.example.ylb.api.service.ProdInfoService;
 import org.example.ylb.api.service.UserService;
+import org.example.ylb.front.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -35,4 +36,8 @@ public class BaseController {
     // 用户服务
     @DubboReference(interfaceClass = UserService.class,version = "1.0")
     protected UserService userService;
+
+    // 短信服务
+    @Autowired
+    protected SmsService smsService;
 }
