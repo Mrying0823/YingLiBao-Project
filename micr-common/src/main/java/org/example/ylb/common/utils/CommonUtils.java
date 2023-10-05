@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
  * @author 邓和颖
  * @since 2023/9/24 19:58
  */
-public class CommonUtil {
+public class CommonUtils {
 
     // 处理 pageNo
     public static int defaultPageNo(Integer pageNo) {

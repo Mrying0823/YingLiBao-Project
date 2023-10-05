@@ -10,7 +10,7 @@ import java.util.Date;
  * 对 Date 类型数据进行处理的工具类
  */
 
-public class DateUtil {
+public class DateUtils {
     /**
      *  对指定 date 对象格式化：yyyy-MM-dd HH:mm:ss
      */
