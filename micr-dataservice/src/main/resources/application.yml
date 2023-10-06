@@ -2,6 +2,9 @@
 Spring:
   application:
     name: micr-dataservice
+  redis:
+    port: 6379
+    host: 192.168.56.104
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,4 +30,7 @@ dubbo:
     provider:
       timeout: 50000
       retries: 0
+
+# 密码加“盐”
+salt: 8464cffca803189e878b340ba83424d7
 
