@@ -68,4 +68,13 @@
       available_money = #{availableMoney,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 为用户开通资金账户 -->
+  <insert id="insertNewFinanceAccount" parameterType="org.example.ylb.api.model.FinanceAccount">
+    insert into u_finance_account (id, uid, available_money
+    )
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{availableMoney,jdbcType=DECIMAL}
+           )
+  </insert>
+
 </mapper>
