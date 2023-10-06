@@ -8,4 +8,7 @@ public interface SmsService {
 
     // 短信服务
     boolean sendSms(String phone);
+
+    // 比对验证码
+    boolean checkSmsCode(String phone,String code);
 }
