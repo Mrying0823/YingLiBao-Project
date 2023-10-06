@@ -3,6 +3,7 @@ package org.example.ylb.front.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.example.ylb.common.constants.RedisKey;
 import org.example.ylb.common.utils.CommonUtils;
 import org.example.ylb.front.view.RespResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +26,18 @@ public class SmsController extends BaseController {
     public RespResult sendCodeRegister(@RequestParam("phone") String phone) {
         RespResult respResult = RespResult.fail();
 
-        if(CommonUtils.checkPhone(phone)) {
-            if (smsService.sendSms(phone)) {
-                respResult = RespResult.ok();
-            }
+        String key = RedisKey.KEY_SMS_CODE_REG+phone;
+
+        if(!CommonUtils.checkPhone(phone)) {
+            respResult.setMsg("手机号码格式不正确");
+        }else if(Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
+
+            // 根据 redis 中是否存在验证码来判断是否调用第三方接口
+            respResult.setMsg("验证码未过期");
+        }else if (smsService.sendSms(phone)) {
+
+            // 验证码短信发送成功
+            respResult = RespResult.ok();
         }
 
         return respResult;
