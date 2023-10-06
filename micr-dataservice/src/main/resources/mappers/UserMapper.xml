@@ -144,4 +144,20 @@
 
     group by phone
   </select>
+
+  <!-- 注册新用户，获取用户 id -->
+  <insert id="insertNewUserReturnId" parameterType="org.example.ylb.api.model.User">
+    insert into u_user (id, phone, login_password,
+                        name, id_card, add_time,
+                        last_login_time, header_image)
+
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP},
+            #{lastLoginTime,jdbcType=TIMESTAMP}, #{headerImage,jdbcType=VARCHAR})
+
+    <!-- 使用 mybatis 的 selectKey 配合插入操作，获取自增长的 id -->
+    <selectKey keyColumn="id" keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+      select LAST_INSERT_ID() as id
+    </selectKey>
+  </insert>
 </mapper>

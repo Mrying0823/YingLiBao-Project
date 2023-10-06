@@ -27,4 +27,7 @@ public interface UserMapper {
 
     // 查询用户表中所有的手机号
     List<String> selectUserPhone();
+
+    // 注册新用户
+    int insertNewUserReturnId(User user);
 }

@@ -1,7 +1,5 @@
 package org.example.ylb.api.service;
 
-import org.example.ylb.api.model.User;
-
 import java.util.List;
 
 /**
@@ -12,4 +10,7 @@ public interface UserService {
 
     // 查询用户表中所有的手机号
     List<String> queryUserPhone();
+
+    // 注册用户
+    int userRegister(String phone,String password);
 }
