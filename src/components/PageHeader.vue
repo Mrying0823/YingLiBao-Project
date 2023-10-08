@@ -13,8 +13,8 @@
               <a href="javascript:void(0)">我要投资</a>
               <!--二级导航-->
               <div class="two-title">
-                <router-link :to="{ path: '/productList', query: { productType: 1 } }">优选类产品</router-link>
-                <router-link :to="{ path: '/productList', query: { productType: 2 } }">散标类产品</router-link>
+                <router-link :to="{ path: '/product/productList', query: { productType: 1 } }">优选类产品</router-link>
+                <router-link :to="{ path: '/product/productList', query: { productType: 2 } }">散标类产品</router-link>
               </div>
             </li>
             <li><a href="user_center.html" target="_blank">借款人信息</a></li>
@@ -23,8 +23,8 @@
           </ul>
         </div>
         <div class="public-head-right">
-          <a href="login.html" target="_blank">登录</a>
-          <a href="register.html" target="_blank">注册</a>
+          <router-link :to="{path: '/user/login'}">登录</router-link>
+          <router-link :to="{path: '/user/register'}">注册</router-link>
         </div>
       </div>
     </div>
@@ -35,8 +35,6 @@
 
 export default {
   name: "PageHeader",
-  methods: {
-  }
 }
 </script>
 
