@@ -23,7 +23,7 @@
           </ul>
         </div>
         <div class="public-head-right">
-          <router-link :to="{path: '/user/login'}">登录</router-link>
+          <router-link :to="{path: '/user/passwdLogin'}">登录</router-link>
           <router-link :to="{path: '/user/register'}">注册</router-link>
         </div>
       </div>

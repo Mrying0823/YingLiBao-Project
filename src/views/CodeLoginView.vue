@@ -5,23 +5,21 @@
   <div class="login-content">
     <div class="login-flex">
       <div class="login-left">
-        <p>万民用户知心托付&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ historyAvgRate }}%</span>历史年化收益</p>
-        <p>千万级技术研发投入&nbsp;&nbsp;&nbsp;&nbsp;亿级注册资本平台  </p>
+        <h3>加入动力金融网</h3>
+        <p>坐享<span>{{ platInfo.historyAvgRate }}%</span>历史年化收益</p>
+        <p>平台用户<span>{{ platInfo.registerUsers }}</span>位  </p>
+        <p>累计成交金额<span>{{ platInfo.sumBidMoney }}</span>元</p>
       </div>
       <div class="login-box">
-        <h3 class="login-title">用户注册</h3>
-        <form action="" id="register_Submit">
+        <h3 class="login-title">欢迎登录</h3>
+        <form action="" id="login_Submit">
           <div class="alert-input">
-            <!-- @blur 添加失焦事件 -->
             <input type="text" class="form-border user-num" name="mobile" placeholder="请输入11位手机号" v-model="phone" @blur="checkPhone">
             <div class="err" v-show="isPhoneErrVisible">{{ phoneErr }}</div>
             <p class="prompt_num"></p>
-            <input type="password" placeholder="请输入6-20位英文和数字混合密码" class="form-border user-pass" autocomplete name="password" v-model="passwd" @blur="checkPasswd">
-            <div class="err" v-show="isPasswdErrVisible">{{ passwdErr }}</div>
-            <p class="prompt_pass"></p>
             <div class="form-yzm form-border">
-              <input class="yzm-write" type="text" name="code" placeholder="输入短信验证码" v-model="code" @blur="checkRegisterCode">
-              <span class="yzm-send" type="button" id="yzmBtn" @click="getRegisterCode" v-if="!isCountShow">获取验证码</span>
+              <input class="yzm-write" type="text" name="code" placeholder="输入短信验证码" v-model="code" @blur="checkLoginCode">
+              <span class="yzm-send" type="button" id="yzmBtn" @click="getLoginCode" v-if="!isCountShow">获取验证码</span>
               <span class="yzm-send-wait" type="text" v-if="isCountShow">{{ count }}秒后重试</span>
             </div>
             <div class="err" v-show="isCodeErrVisible">{{ codeErr }}</div>
@@ -30,11 +28,10 @@
           <div class="alert-input-agree">
             <el-checkbox v-model="agree" />&nbsp;我已阅读并同意<a href="javascript:void(0)">《动力金融网注册服务协议》</a>
           </div>
-          <!-- :loading 语法将其绑定到组件的 loading 属性上 -->
-          <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="registerUser">注册</el-button>
+          <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="loginIn">登录</el-button>
         </form>
         <div class="login-skip">
-          已有账号？ <router-link :to="{path: '/user/passwdLogin'}">登录</router-link>
+          密码登录？ <router-link :to="{path: '/user/passwdLogin'}">登录</router-link>
         </div>
       </div>
     </div>
@@ -47,11 +44,10 @@
 <script>
 import PageHeader from "@/components/PageHeader";
 import PageFooter from "@/components/PageFooter";
-import {doPost, toGet} from "@/axios/httpRequest";
-import md5 from "js-md5";
+import {toGet} from "@/axios/httpRequest";
 
 export default {
-  name: "RegisterView",
+  name: "CodeLoginView",
   components: {
     PageHeader,
     PageFooter
@@ -59,17 +55,12 @@ export default {
 
   data() {
     return {
-      historyAvgRate: 0.00,
+      platInfo: {historyAvgRate: 0.00,sumBidMoney: 0.00,registerUsers: 0},
 
       // 手机号
       isPhoneErrVisible: false,
       phone: "",
       phoneErr: "",
-
-      // 密码
-      isPasswdErrVisible: false,
-      passwd: "",
-      passwdErr: "",
 
       // 验证码
       isCodeErrVisible: false,
@@ -135,49 +126,25 @@ export default {
         this.isPhoneErrVisible = true;
       }else {
 
-        // 向服务器发起请求，验证手机号是否可以注册
+        // 向服务器发起请求，验证手机号是否可以登录
         toGet("/v1/user/phoneExists",{phone: this.phone}).then(response => {
           if(response && response.data.code === 200) {
 
-            // 手机号可以注册
-            this.phoneErr = "";
-            this.isPhoneErrVisible = false;
+            // 手机号不可登录
+            this.phoneErr = "该手机号未注册 ";
+            this.isPhoneErrVisible = true;
           }else {
 
-            // 手机号不可注册
-            this.phoneErr = response.data.msg;
-            this.isPhoneErrVisible = true;
+            // 手机号可登录
+            this.phoneErr = "";
+            this.isPhoneErrVisible = false;
           }
         });
       }
     },
 
-    // 检查密码的方法
-    checkPasswd() {
-
-      // 检验密码长度的正则表达式
-      const lengthRegExp = /^.{6,20}$/;
-
-      //检验密码格式的正则表达式
-      const passwdRegExp = /^[A-Za-z0-9]+$/;
-
-      if(this.passwd === "" || this.passwd === undefined) {
-        this.passwdErr = "请输入密码";
-        this.isPasswdErrVisible = true;
-      }else if(!lengthRegExp.test(this.passwd)) {
-        this.passwdErr = "请输入6-20位密码";
-        this.isPasswdErrVisible = true;
-      }else if(!passwdRegExp.test(this.passwd)) {
-        this.passwdErr = "请输入英文和数字的混合密码";
-        this.isPasswdErrVisible = true;
-      }else {
-        this.passwdErr = "";
-        this.isPasswdErrVisible = false;
-      }
-    },
-
     // 检查验证码
-    checkRegisterCode() {
+    checkLoginCode() {
       if (this.code === "" || this.code === undefined) {
         this.codeErr = "请输入验证码";
         this.isCodeErrVisible = true;
@@ -188,7 +155,7 @@ export default {
     },
 
     // 发送验证码
-    getRegisterCode() {
+    getLoginCode() {
       this.checkPhone();
 
       this.$nextTick(() => {
@@ -218,10 +185,9 @@ export default {
     },
 
     // 注册用户
-    registerUser() {
+    loginIn() {
       this.checkPhone();
-      this.checkPasswd();
-      this.checkRegisterCode();
+      this.checkLoginCode();
 
       // 等待 dom 容器更新后
       this.$nextTick(() => {
@@ -236,42 +202,16 @@ export default {
         }else {
           this.isLoading = true;
 
-          // 数据正确，向后端发起注册请求
-          // 使用 MD5 加密密码
-          let newPasswd = md5(this.passwd);
-
-          // post 请求方法，url 是请求的地址，params 是请求的 json 对象
-          // 前端传递的参数后端要能接收到
-          // 把 json 对象转为 QS 格式
-          // "a=2&b=3" 这种数据传输格式通常被称为 URL 编码或查询字符串（Query String）
-          doPost("/v1/user/register",{
-            phone: this.phone,
-            password: newPasswd,
-            code: this.code
-          }).then(response => {
-            if(response && response.data.code === 200) {
-              this.showMessage("success","注册成功，自动跳转登录界面");
-              this.isLoading = false;
-              this.$router.push({
-                path: "/user/login"
-              });
-            }else {
-              this.showMessage("error",response.data.msg);
-              this.isLoading = false;
-            }
-          });
         }
       });
     }
   },
 
   mounted() {
-    // 页面加载至浏览器，执行 mounted
-    // 向服务器发起请求，获取数据，更新页面
     toGet("/v1/plat/info",{}).then(response => {
       // 如果 response 不为空
       if(response) {
-        this.historyAvgRate = response.data.retData.historyAvgRate;
+        this.platInfo = response.data.retData;
       }
     });
   }
