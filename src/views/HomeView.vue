@@ -81,13 +81,13 @@
               <span>余利可投资金额</span>
             </li>
           </ul>
-          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="new-user-btn">立即投资</router-link>
+          <router-link :to="{ path: '/product/productDetail', query: {productId: product.id}}" class="new-user-btn">立即投资</router-link>
         </div>
         <span class="new-tag">新用户专享</span>
       </div>
 
       <!-- 通过 url 传递参数 -->
-      <h2 class="public-title"><span>优选产品</span> <router-link :to="{ path: '/productList', query: { productType: 1 } }" class="public-title-more">查看更多产品>></router-link></h2>
+      <h2 class="public-title"><span>优选产品</span> <router-link :to="{ path: '/product/productList', query: { productType: 1 } }" class="public-title-more">查看更多产品>></router-link></h2>
       <ul class="preferred-select clearfix">
         <li v-for="(product,index) in youXuan" :key="product.id">
           <h3 class="preferred-select-title">
@@ -114,11 +114,11 @@
           <p class="preferred-select-txt">
             优选计划项目，投资回报周期{{product.cycle}}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
-          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
+          <router-link :to="{ path: '/product/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
         </li>
       </ul>
 
-      <h2 class="public-title"><span>散标产品</span> <router-link :to="{ path: '/productList', query: { productType: 2 } }" class="public-title-more">查看更多产品>></router-link></h2>
+      <h2 class="public-title"><span>散标产品</span> <router-link :to="{ path: '/product/productList', query: { productType: 2 } }" class="public-title-more">查看更多产品>></router-link></h2>
       <ul class="preferred-select clearfix">
         <li v-for="product in sanBiao" :key="product.id">
           <h3 class="preferred-select-title1">{{ product.productName }}
@@ -141,7 +141,7 @@
           <p class="preferred-select-txt">
             散标计划项目，投资回报周期{{product.cycle}}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
-          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
+          <router-link :to="{ path: '/product/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
         </li>
       </ul>
 
