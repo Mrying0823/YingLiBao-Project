@@ -9,8 +9,8 @@
       <!--排行榜-->
       <ul class="rank-list">
         <li v-for="(item,index) in investRank" :key="item.phone">
-          <img src="@/assets/image/list-rank1.png" alt="" v-if="index === '0'">
-          <img src="@/assets/image/list-rank2.png" alt="" v-else-if="index === '1'">
+          <img src="@/assets/image/list-rank1.png" alt="" v-if="index === 0">
+          <img src="@/assets/image/list-rank2.png" alt="" v-else-if="index === 1">
           <img src="@/assets/image/list-rank3.png" alt="" v-else>
           <p class="rank-list-phone">{{ item.phone }}</p>
           <span>{{item.money}}元</span>
@@ -43,7 +43,7 @@
           <p class="preferred-select-txt">
             优选计划项目，投资回报周期{{ product.cycle }}个月，起点低，适合短期资金周转、对流动性要求高的投资人。
           </p>
-          <router-link :to="{ path: '/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
+          <router-link :to="{ path: '/product/productDetail', query: {productId: product.id}}" class="preferred-select-btn">立即投资</router-link>
         </li>
       </ul>
 
@@ -132,7 +132,7 @@ export default {
       });
 
       // 获取产品列表数据
-      toGet("/v1/product/list", {productType}).then(response => {
+      toGet("/v1/product/list", {productType: productType}).then(response => {
         if(response) {
           this.productList = response.data.list;
           this.pageInfo = response.data.pageInfo;
