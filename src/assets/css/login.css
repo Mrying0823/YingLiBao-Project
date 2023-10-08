@@ -158,6 +158,12 @@ input:-ms-input-placeholder{
     cursor: pointer;
     color: #688EF9;
 }
+.login-content .login-flex .login-box .form-yzm .yzm-send-wait{
+    width: 40%;
+    text-align: right;
+    cursor: pointer;
+    color: #ef0808;
+}
 .login-content .login-flex .login-box .alert-input-btn{
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
