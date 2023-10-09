@@ -20,5 +20,6 @@ public interface FinanceAccountMapper {
 
     int updateByPrimaryKey(FinanceAccount record);
 
+    // 开通用户资金账户
     int insertNewFinanceAccount(FinanceAccount financeAccount);
 }
