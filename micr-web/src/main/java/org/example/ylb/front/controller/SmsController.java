@@ -34,7 +34,30 @@ public class SmsController extends BaseController {
 
             // 根据 redis 中是否存在验证码来判断是否调用第三方接口
             respResult.setMsg("验证码未过期");
-        }else if (smsService.sendSms(phone)) {
+        }else if (registerSmsService.sendSms(phone)) {
+
+            // 验证码短信发送成功
+            respResult = RespResult.ok();
+        }
+
+        return respResult;
+    }
+
+    @ApiOperation(value = "发送验证码至用户手机",notes = "用户登录，发送验证码至用户手机")
+    @ApiImplicitParam(name = "phone",value = "手机号码",required = true)
+    @GetMapping("/sms/login")
+    public RespResult sendCodeLogin(@RequestParam("phone") String phone) {
+        RespResult respResult = RespResult.fail();
+
+        String key = RedisKey.KEY_SMS_CODE_LOGIN+phone;
+
+        if(!CommonUtils.checkPhone(phone)) {
+            respResult.setMsg("手机号码格式不正确");
+        }else if(Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
+
+            // 根据 redis 中是否存在验证码来判断是否调用第三方接口
+            respResult.setMsg("验证码未过期");
+        }else if (loginSmsService.sendSms(phone)) {
 
             // 验证码短信发送成功
             respResult = RespResult.ok();

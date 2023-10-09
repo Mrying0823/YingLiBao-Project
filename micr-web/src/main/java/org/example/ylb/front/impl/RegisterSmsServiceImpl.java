@@ -1,13 +1,7 @@
 package org.example.ylb.front.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.util.EntityUtils;
 import org.example.ylb.common.constants.RedisKey;
-import org.example.ylb.common.utils.HttpUtils;
 import org.example.ylb.front.service.SmsService;
 import org.example.ylb.front.settings.SmsConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +18,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 // 短信服务不涉及分布式微服务架构，使用 Service 注解即可
-@Service("smsService")
-public class SmsServiceImpl implements SmsService {
+@Service("registerSmsService")
+public class RegisterSmsServiceImpl implements SmsService {
 
     // 配置文件绑定类
     private SmsConfiguration smsConfiguration;

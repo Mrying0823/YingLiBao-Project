@@ -13,5 +13,7 @@ public class RedisKey {
     public static final String KEY_USER_PHONE = "USER:PHONE";
 
     // 短信验证码
-    public static final String KEY_SMS_CODE_REG = "SMS_CODE";
+    public static final String KEY_SMS_CODE_REG = "SMS_CODE_REG";
+
+    public static final String KEY_SMS_CODE_LOGIN = "SMS_CODE_LOGIN";
 }

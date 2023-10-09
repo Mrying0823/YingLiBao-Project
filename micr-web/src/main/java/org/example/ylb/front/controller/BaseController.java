@@ -39,5 +39,8 @@ public class BaseController {
 
     // 短信服务
     @Autowired
-    protected SmsService smsService;
+    protected SmsService registerSmsService;
+
+    @Autowired
+    protected SmsService loginSmsService;
 }
