@@ -1,5 +1,5 @@
 <template>
-  <!--头部-->
+  <!-- 头部 -->
   <page-header></page-header>
 
   <div class="login-content">
@@ -12,45 +12,65 @@
       </div>
       <div class="login-box">
         <h3 class="login-title">欢迎登录</h3>
-        <form action="" id="login_Submit">
-          <div class="alert-input">
-            <input type="text" class="form-border user-num" name="mobile" placeholder="请输入11位手机号" v-model="phone" @blur="checkPhone">
-            <div class="err" v-show="isPhoneErrVisible">{{ phoneErr }}</div>
-            <p class="prompt_num"></p>
-            <div class="form-yzm form-border">
-              <input class="yzm-write" type="text" name="code" placeholder="输入短信验证码" v-model="code" @blur="checkLoginCode">
-              <span class="yzm-send" type="button" id="yzmBtn" @click="getLoginCode" v-if="!isCountShow">获取验证码</span>
-              <span class="yzm-send-wait" type="text" v-if="isCountShow">{{ count }}秒后重试</span>
-            </div>
-            <div class="err" v-show="isCodeErrVisible">{{ codeErr }}</div>
-            <p class="prompt_yan"></p>
-          </div>
-          <div class="alert-input-agree">
-            <el-checkbox v-model="agree" />&nbsp;我已阅读并同意<a href="javascript:void(0)">《动力金融网注册服务协议》</a>
-          </div>
-          <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="loginIn">登录</el-button>
-        </form>
-        <div class="login-skip">
-          密码登录？ <router-link :to="{path: '/user/passwdLogin'}">登录</router-link>
+          <el-tabs v-model="activeTab" :stretch="true">
+            <el-tab-pane label="密码登录" name="passwdLogin">
+              <el-form ref="passwordForm">
+                <form>
+                  <div class="alert-input">
+                    <!--<input class="form-border user-name" name="username" type="text" placeholder="您的姓名">
+                    <p class="prompt_name"></p>-->
+                    <input type="text" class="form-border user-num" name="mobile" placeholder="请输入11位手机号" v-model="phone" @blur="checkPhone">
+                    <div class="err" v-show="isPhoneErrVisible">{{ phoneErr }}</div>
+                    <p class="prompt_num"></p>
+                    <input type="password" placeholder="请输入6-20位英文和数字混合密码" class="form-border user-pass" autocomplete name="password" v-model="passwd" @blur="checkPasswd">
+                    <div class="err" v-show="isPasswdErrVisible">{{ passwdErr }}</div>
+                    <p class="prompt_pass"></p>
+                  </div>
+                  <div class="alert-input-agree">
+                    <el-checkbox v-model="agree" />&nbsp;我已阅读并同意<a href="javascript:void(0)">《动力金融网注册服务协议》</a>
+                  </div>
+                  <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="passwdLoginIn">登录</el-button>
+                </form>
+              </el-form>
+            </el-tab-pane>
+
+            <el-tab-pane label="验证码登录" name="codeLogin">
+              <div class="alert-input">
+                <input type="text" class="form-border user-num" name="mobile" placeholder="请输入11位手机号" v-model="phone" @blur="checkPhone">
+                <div class="err" v-show="isPhoneErrVisible">{{ phoneErr }}</div>
+                <p class="prompt_num"></p>
+                <div class="form-yzm form-border">
+                  <input class="yzm-write" type="text" name="code" placeholder="输入短信验证码" v-model="code" @blur="checkLoginCode">
+                  <span class="yzm-send" type="button" id="yzmBtn" @click="getLoginCode" v-if="!isCountShow">获取验证码</span>
+                  <span class="yzm-send-wait" type="text" v-if="isCountShow">{{ count }}秒后重试</span>
+                </div>
+                <div class="err" v-show="isCodeErrVisible">{{ codeErr }}</div>
+                <p class="prompt_yan"></p>
+              </div>
+              <div class="alert-input-agree">
+                <el-checkbox v-model="agree" />&nbsp;我已阅读并同意<a href="javascript:void(0)">《动力金融网注册服务协议》</a>
+              </div>
+              <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="codeLoginIn">登录</el-button>
+            </el-tab-pane>
+          </el-tabs>
         </div>
-      </div>
     </div>
   </div>
 
-  <!--公共底部-->
+  <!-- 公共底部 -->
   <page-footer></page-footer>
 </template>
 
 <script>
-import PageHeader from "@/components/PageHeader";
 import PageFooter from "@/components/PageFooter";
+import PageHeader from "@/components/PageHeader";
 import {toGet} from "@/axios/httpRequest";
 
 export default {
-  name: "CodeLoginView",
+  name: "LoginView",
   components: {
-    PageHeader,
-    PageFooter
+    PageFooter,
+    PageHeader
   },
 
   data() {
@@ -61,6 +81,11 @@ export default {
       isPhoneErrVisible: false,
       phone: "",
       phoneErr: "",
+
+      // 密码
+      isPasswdErrVisible: false,
+      passwd: "",
+      passwdErr: "",
 
       // 验证码
       isCodeErrVisible: false,
@@ -75,8 +100,11 @@ export default {
       // 同意注册协议
       agree: false,
 
-      // 注册加载
+      // 登录加载
       isLoading: false,
+
+      // 选择登录方式
+      activeTab: "passwdLogin"
     }
   },
 
@@ -143,6 +171,30 @@ export default {
       }
     },
 
+    // 检查密码的方法
+    checkPasswd() {
+
+      // 检验密码长度的正则表达式
+      const lengthRegExp = /^.{6,20}$/;
+
+      //检验密码格式的正则表达式
+      const passwdRegExp = /^[A-Za-z0-9]+$/;
+
+      if(this.passwd === "" || this.passwd === undefined) {
+        this.passwdErr = "请输入密码";
+        this.isPasswdErrVisible = true;
+      }else if(!lengthRegExp.test(this.passwd)) {
+        this.passwdErr = "请输入6-20位密码";
+        this.isPasswdErrVisible = true;
+      }else if(!passwdRegExp.test(this.passwd)) {
+        this.passwdErr = "请输入英文和数字的混合密码";
+        this.isPasswdErrVisible = true;
+      }else {
+        this.passwdErr = "";
+        this.isPasswdErrVisible = false;
+      }
+    },
+
     // 检查验证码
     checkLoginCode() {
       if (this.code === "" || this.code === undefined) {
@@ -184,10 +236,10 @@ export default {
       });
     },
 
-    // 注册用户
-    loginIn() {
+    // 登录
+    passwdLoginIn() {
       this.checkPhone();
-      this.checkLoginCode();
+      this.checkPasswd();
 
       // 等待 dom 容器更新后
       this.$nextTick(() => {
@@ -195,6 +247,23 @@ export default {
           this.showMessage("error",this.phoneErr);
         }else if(this.passwdErr !== "") {
           this.showMessage("error",this.passwdErr);
+        }else if(!this.agree) {
+          this.showMessage("error","请阅读并同意 《动力金融网注册服务协议》")
+        }else {
+          this.isLoading = true;
+
+        }
+      });
+    },
+
+    codeLoginIn() {
+      this.checkPhone();
+      this.checkLoginCode();
+
+      // 等待 dom 容器更新后
+      this.$nextTick(() => {
+        if(this.phoneErr !== "") {
+          this.showMessage("error",this.phoneErr);
         }else if(this.codeErr !== "") {
           this.showMessage("error",this.codeErr);
         }else if(!this.agree) {

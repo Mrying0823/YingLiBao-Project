@@ -3,8 +3,7 @@ import HomeView from "@/views/HomeView.vue"
 import ProductListView from "@/views/ProductListView";
 import ProductDetailView from "@/views/ProductDetailView";
 import RegisterView from "@/views/RegisterView";
-import CodeLoginView from "@/views/CodeLoginView";
-import PasswdLoginView from "@/views/PasswdLoginView";
+import LoginView from "@/views/LoginView";
 
 const routes = [
   {
@@ -32,15 +31,9 @@ const routes = [
   },
 
   {
-    path: "/user/passwdLogin",
-    name: "passwdLogin",
-    component: PasswdLoginView
-  },
-
-  {
-    path: "/user/codeLogin",
-    name: "codeLogin",
-    component: CodeLoginView
+    path: "/user/login",
+    name: "loginView",
+    component: LoginView
   }
 ]
 
