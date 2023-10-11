@@ -40,6 +40,18 @@ api:
     smsSignId: 2e65b1bb3d054466b82f0c9d125465e2
     templateId: 908e94ccf08b4476ba6c876d13f084ad
 
+# JWT 配置
+jwt:
+  data:
+    # jwt加密密钥
+    secret: 2bc1a2207c684d7fb29df11f8abdc815
+    # jwt储存的请求头Authorization固定写法
+    tokenHeader: Authorization
+    # jwt的过期时间(60s*60min*24h*7day)
+    expiration: 604800
+    # jwt负载中拿到的头信息
+    tokenHead: Bearer
+
 
 
 
