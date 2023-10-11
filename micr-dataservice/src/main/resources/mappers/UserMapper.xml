@@ -160,4 +160,24 @@
       select LAST_INSERT_ID() as id
     </selectKey>
   </insert>
+
+  <!-- 用户登录验证 -->
+  <select id="selectUserByPhoneAndPwd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+
+    from u_user
+
+    where phone = #{phone,jdbcType=VARCHAR},loginPassword = #{loginPassword,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 更新最后一次登录时间 -->
+  <update id="updateLastLoginTime" parameterType="org.example.ylb.api.model.User">
+    update u_user
+
+    set
+    last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

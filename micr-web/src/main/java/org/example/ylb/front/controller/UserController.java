@@ -84,7 +84,7 @@ public class UserController extends BaseController {
             // 检查密码
             // 密码密文应为 32 位
             respResult.setMsg("密码无效");
-        }else if(!smsService.checkSmsCode(phone,code)) {
+        }else if(!registerSmsService.checkSmsCode(phone,code)) {
 
             // 检查短信验证码
             respResult.setMsg("短信验证码无效");
@@ -96,4 +96,7 @@ public class UserController extends BaseController {
 
         return respResult;
     }
+
+    // 登录验证，获取 accessToken
+
 }

@@ -1,5 +1,6 @@
 package org.example.ylb.dataservice.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.example.ylb.api.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -30,4 +31,7 @@ public interface UserMapper {
 
     // 注册新用户
     int insertNewUserReturnId(User user);
+
+    // 用户登录
+    User selectUserByPhoneAndPwd(@Param("phone") String phone, @Param("loginPassword") String passwd);
 }
