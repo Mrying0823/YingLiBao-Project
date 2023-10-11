@@ -28,6 +28,8 @@ public class RespResult {
     // 分页
     private PageInfo pageInfo;
 
+    private String accessToken;
+
     // 表示成功的 RespResult 对象
     public static RespResult ok() {
         RespResult respResult = new RespResult();
@@ -94,5 +96,13 @@ public class RespResult {
 
     public void setPageInfo(PageInfo pageInfo) {
         this.pageInfo = pageInfo;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }
