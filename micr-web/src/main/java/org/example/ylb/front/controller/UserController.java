@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.example.ylb.api.model.User;
+import org.example.ylb.common.constants.JwtKey;
 import org.example.ylb.common.constants.RedisKey;
 import org.example.ylb.common.constants.YLBConstant;
 import org.example.ylb.common.utils.CommonUtils;
-import org.example.ylb.front.pojo.CustomerUserDetails;
 import org.example.ylb.front.view.RespResult;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +28,12 @@ import java.util.concurrent.TimeUnit;
 public class UserController extends BaseController {
 
     private RespResult userLoginRespResult(User user,String phone) {
-        CustomerUserDetails customerUserDetails = new CustomerUserDetails(phone,null,
-                true,true,true,true);
 
-        String accessToken = jwtUtils.createToken(customerUserDetails);
+        Map<String,Object> claims = new HashMap<>();
+
+        claims.put(JwtKey.CLAIM_KEY_PHONE,phone);
+
+        String accessToken = jwtUtils.createToken(claims);
 
         // 防止用户信息暴露
         Map<String,Object> userInfo = new HashMap<>();
@@ -122,7 +124,7 @@ public class UserController extends BaseController {
     }
 
     // 登录验证，获取 accessToken
-    @ApiOperation(value = "用户登录",notes = "用户输入手机号码、密码进行登录")
+    @ApiOperation(value = "用户密码登录",notes = "用户输入手机号码、密码进行登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone",value = "手机号码",required = true),
             @ApiImplicitParam(name = "password",value = "密码",required = true)
@@ -146,7 +148,7 @@ public class UserController extends BaseController {
         return respResult;
     }
 
-    @ApiOperation(value = "用户登录",notes = "用户输入手机号码、验证码进行登录")
+    @ApiOperation(value = "用户验证码登录",notes = "用户输入手机号码、验证码进行登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone",value = "手机号码",required = true),
             @ApiImplicitParam(name = "code",value = "验证码",required = true)
@@ -161,7 +163,7 @@ public class UserController extends BaseController {
         }else if(!loginSmsService.checkSmsCode(phone,code)) {
             respResult.setMsg("短信验证码无效");
         }else {
-            User user = userService.queryUserByPhoneAndPwd(phone,null);
+            User user = userService.queryUserByPhone(phone);
             if(user != null) {
                 respResult = userLoginRespResult(user,phone);
             }
