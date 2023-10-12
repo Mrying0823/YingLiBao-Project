@@ -15,4 +15,11 @@ public class YLBConstant {
 
     // 散标
     public static final int PRODUCT_TYPE_SANBIAO = 2;
+
+    // 用户信息
+    public static final String USER_INFO_ID = "id";
+
+    public static final String USER_INFO_PHONE = "phone";
+
+    public static final String USER_INFO_NAME = "name";
 }
