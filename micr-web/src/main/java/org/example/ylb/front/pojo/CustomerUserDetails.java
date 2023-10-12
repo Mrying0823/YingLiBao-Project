@@ -14,22 +14,22 @@ import java.util.Collections;
 public class CustomerUserDetails implements UserDetails {
 
     // 用户手机号码
-    private String phone;
+    private final String phone;
 
     // 账号密码
-    private String password;
+    private final String password;
 
     // 用户是否启用
-    private boolean enabled;
+    private final boolean enabled;
 
     // 用户账户是否未过期
-    private boolean accountNonExpired;
+    private final boolean accountNonExpired;
 
     // 用户账户是否未锁定
-    private boolean accountNonLocked;
+    private final boolean accountNonLocked;
 
     // 用户凭证是否未过期
-    private boolean credentialsNonExpired;
+    private final boolean credentialsNonExpired;
 
     public CustomerUserDetails(String phone,
                                String password,
