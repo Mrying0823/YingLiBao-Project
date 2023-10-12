@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 邓和颖
@@ -107,5 +108,43 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
+    }
+
+    // 用户登录
+    @Override
+    public User queryUserByPhoneAndPwd(String phone, String passwd) {
+
+        User user = null;
+
+        SetOperations<String,String> set = stringRedisTemplate.opsForSet();
+
+        // 如果 redis 为空
+        if(set.size(RedisKey.KEY_USER_PHONE) == 0) {
+
+            // 查询用户表中所有的电话号码
+            List<String> phoneList = userMapper.selectUserPhone();
+
+            // 将电话号码添加到 Redis Set 中
+            set.add(RedisKey.KEY_USER_PHONE, phoneList.toArray(new String[0]));
+
+            // 设置过期时间
+            stringRedisTemplate.expire(RedisKey.KEY_USER_PHONE, 1, TimeUnit.HOURS);
+        }
+
+        // 检查参数
+        if(CommonUtils.checkPhone(phone)
+                && passwd != null && passwd.length() == 32
+                // 验证手机是否已注册
+                && Boolean.FALSE.equals(set.isMember(RedisKey.KEY_USER_PHONE, phone))) {
+
+            String saltPasswd = DigestUtils.md5Hex(passwd+salt);
+
+            user = userMapper.selectUserByPhoneAndPwd(phone,saltPasswd);
+            if(user != null) {
+                user.setAddTime(new Date());
+                userMapper.updateLastLoginTime(user);
+            }
+        }
+        return user;
     }
 }

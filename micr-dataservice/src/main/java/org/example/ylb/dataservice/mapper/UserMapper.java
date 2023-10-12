@@ -34,4 +34,7 @@ public interface UserMapper {
 
     // 用户登录
     User selectUserByPhoneAndPwd(@Param("phone") String phone, @Param("loginPassword") String passwd);
+
+    // 更新用户最后一次登录时间
+    int updateLastLoginTime(User user);
 }
