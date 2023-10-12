@@ -8,6 +8,4 @@ public class JwtKey {
 
     //创建对象主体
     public static final String CLAIM_KEY_PHONE = "phone";
-
-    public static final String CLAIM_KEY_DATE = "date";
 }
