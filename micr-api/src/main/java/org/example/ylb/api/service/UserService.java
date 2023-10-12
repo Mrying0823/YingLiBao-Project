@@ -18,4 +18,6 @@ public interface UserService {
 
     // 用户登录
     User queryUserByPhoneAndPwd(String phone,String passwd);
+
+    User queryUserByPhone(String phone);
 }

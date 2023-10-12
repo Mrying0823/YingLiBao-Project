@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -110,17 +111,14 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    // 用户登录
-    @Override
-    public User queryUserByPhoneAndPwd(String phone, String passwd) {
+    // 获取 redis 用户电话号码集合，这个不符合我的要求
+    public Set<String> getUserPhonesFromRedis() {
+        SetOperations<String, String> set = stringRedisTemplate.opsForSet();
 
-        User user = null;
+        // 尝试从 Redis 获取用户电话号码集合
+        Set<String> userPhones = set.members(RedisKey.KEY_USER_PHONE);
 
-        SetOperations<String,String> set = stringRedisTemplate.opsForSet();
-
-        // 如果 redis 为空
-        if(set.size(RedisKey.KEY_USER_PHONE) == 0) {
-
+        if (userPhones == null || userPhones.isEmpty()) {
             // 查询用户表中所有的电话号码
             List<String> phoneList = userMapper.selectUserPhone();
 
@@ -131,20 +129,55 @@ public class UserServiceImpl implements UserService {
             stringRedisTemplate.expire(RedisKey.KEY_USER_PHONE, 1, TimeUnit.HOURS);
         }
 
+        return userPhones;
+    }
+
+
+    // 用户登录
+    @Override
+    public User queryUserByPhoneAndPwd(String phone, String passwd) {
+
+        User user = null;
+
+        Set<String> userPhones = getUserPhonesFromRedis();
+
         // 检查参数
         if(CommonUtils.checkPhone(phone)
                 && passwd != null && passwd.length() == 32
                 // 验证手机是否已注册
-                && Boolean.FALSE.equals(set.isMember(RedisKey.KEY_USER_PHONE, phone))) {
+                && userPhones.contains(phone)) {
 
             String saltPasswd = DigestUtils.md5Hex(passwd+salt);
 
             user = userMapper.selectUserByPhoneAndPwd(phone,saltPasswd);
             if(user != null) {
-                user.setAddTime(new Date());
+                user.setLastLoginTime(new Date());
                 userMapper.updateLastLoginTime(user);
             }
         }
+
+        return user;
+    }
+
+    @Override
+    public User queryUserByPhone(String phone) {
+
+        User user = null;
+
+        Set<String> userPhones = getUserPhonesFromRedis();
+
+        // 检查参数
+        if(CommonUtils.checkPhone(phone)
+                // 验证手机是否已注册
+                && userPhones.contains(phone)) {
+
+            user = userMapper.selectUserByPhone(phone);
+            if(user != null) {
+                user.setLastLoginTime(new Date());
+                userMapper.updateLastLoginTime(user);
+            }
+        }
+
         return user;
     }
 }

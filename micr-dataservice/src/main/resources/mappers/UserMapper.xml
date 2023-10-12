@@ -168,7 +168,16 @@
 
     from u_user
 
-    where phone = #{phone,jdbcType=VARCHAR},loginPassword = #{loginPassword,jdbcType=VARCHAR}
+    where phone = #{phone,jdbcType=VARCHAR} and login_password = #{loginPassword,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectUserByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+
+    from u_user
+
+    where phone = #{phone,jdbcType=VARCHAR}
   </select>
 
   <!-- 更新最后一次登录时间 -->
