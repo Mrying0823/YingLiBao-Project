@@ -4,13 +4,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.example.ylb.api.model.User;
 import org.example.ylb.common.constants.RedisKey;
+import org.example.ylb.common.constants.YLBConstant;
 import org.example.ylb.common.utils.CommonUtils;
+import org.example.ylb.front.pojo.CustomerUserDetails;
 import org.example.ylb.front.view.RespResult;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,6 +26,25 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/v1")
 @RestController
 public class UserController extends BaseController {
+
+    private RespResult userLoginRespResult(User user,String phone) {
+        CustomerUserDetails customerUserDetails = new CustomerUserDetails(phone,null,
+                true,true,true,true);
+
+        String accessToken = jwtUtils.createToken(customerUserDetails);
+
+        // 防止用户信息暴露
+        Map<String,Object> userInfo = new HashMap<>();
+        userInfo.put(YLBConstant.USER_INFO_ID,user.getId());
+        userInfo.put(YLBConstant.USER_INFO_PHONE,user.getPhone());
+        userInfo.put(YLBConstant.USER_INFO_NAME,user.getName());
+
+        RespResult respResult = RespResult.ok();
+        respResult.setAccessToken(accessToken);
+        respResult.setRetData(userInfo);
+
+        return respResult;
+    }
 
     // 验证手机号是否已注册
     @ApiOperation(value = "检验手机号是否已注册",notes = "注册用户，检验手机是否已注册")
@@ -98,5 +122,51 @@ public class UserController extends BaseController {
     }
 
     // 登录验证，获取 accessToken
+    @ApiOperation(value = "用户登录",notes = "用户输入手机号码、密码进行登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone",value = "手机号码",required = true),
+            @ApiImplicitParam(name = "password",value = "密码",required = true)
+    })
+    @PostMapping("/user/passwdLogin")
+    public RespResult userLogin(@RequestParam("phone") String phone,
+                                @RequestParam("password") String passwd
+                                ) {
+        RespResult respResult = RespResult.fail();
+        if(!CommonUtils.checkPhone(phone)) {
+            respResult.setMsg("手机号码格式不正确");
+        }else if(passwd == null || passwd.length() != 32) {
+            respResult.setMsg("密码无效");
+        }else {
+            User user = userService.queryUserByPhoneAndPwd(phone,passwd);
+            if(user != null) {
+                respResult = userLoginRespResult(user,phone);
+            }
+        }
 
+        return respResult;
+    }
+
+    @ApiOperation(value = "用户登录",notes = "用户输入手机号码、验证码进行登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone",value = "手机号码",required = true),
+            @ApiImplicitParam(name = "code",value = "验证码",required = true)
+    })
+    @PostMapping("/user/codeLogin")
+    public RespResult userLoginByCode(@RequestParam("phone") String phone,
+                                @RequestParam("code") String code
+                                ) {
+        RespResult respResult = RespResult.fail();
+        if(!CommonUtils.checkPhone(phone)) {
+            respResult.setMsg("手机号码格式不正确");
+        }else if(!loginSmsService.checkSmsCode(phone,code)) {
+            respResult.setMsg("短信验证码无效");
+        }else {
+            User user = userService.queryUserByPhoneAndPwd(phone,null);
+            if(user != null) {
+                respResult = userLoginRespResult(user,phone);
+            }
+        }
+
+        return respResult;
+    }
 }
