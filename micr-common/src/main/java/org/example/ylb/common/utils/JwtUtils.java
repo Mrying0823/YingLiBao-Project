@@ -3,6 +3,7 @@ package org.example.ylb.common.utils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.example.ylb.common.constants.JwtKey;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
@@ -19,16 +20,11 @@ import java.util.Map;
 @Slf4j
 public class JwtUtils {
 
-    //创建对象主体
-    private static final String CLAIM_KEY_USERNAME = "subject";
-    //创建创建时间
-    private static final String CLAIM_KEY_CREATED = "created";
-
     // 密钥
-    private String secret;
+    private final String secret;
 
     // 过期时间
-    private Long expiration;
+    private final Long expiration;
 
     public JwtUtils(String secret, Long expiration) {
         this.secret = secret;
@@ -39,8 +35,8 @@ public class JwtUtils {
     // 传入的是使用 SpringSecurity 里的 UserDetails
     public String createToken(UserDetails userDetails) {
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-        claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put(JwtKey.CLAIM_KEY_PHONE, userDetails.getUsername());
+        claims.put(JwtKey.CLAIM_KEY_DATE, userDetails.getUsername());
         return createToken(claims);
     }
 
@@ -134,7 +130,7 @@ public class JwtUtils {
     public String refreshToken(String token){
         Claims claims = getClaimsFromToken(token);
         // 修改为当前时间
-        claims.put(CLAIM_KEY_CREATED,new Date());
+        claims.put(JwtKey.CLAIM_KEY_DATE,new Date());
         return createToken(claims);
     }
 
