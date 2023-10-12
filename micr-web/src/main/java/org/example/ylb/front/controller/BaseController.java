@@ -5,6 +5,7 @@ import org.example.ylb.api.service.BidInfoService;
 import org.example.ylb.api.service.PlatBaseInfoService;
 import org.example.ylb.api.service.ProdInfoService;
 import org.example.ylb.api.service.UserService;
+import org.example.ylb.common.utils.JwtUtils;
 import org.example.ylb.front.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -43,4 +44,8 @@ public class BaseController {
 
     @Autowired
     protected SmsService loginSmsService;
+
+    // JwtUtils
+    @Autowired
+    protected JwtUtils jwtUtils;
 }
