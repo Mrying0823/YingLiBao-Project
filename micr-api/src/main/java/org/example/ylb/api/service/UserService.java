@@ -17,7 +17,5 @@ public interface UserService {
     int userRegister(String phone,String password);
 
     // 用户登录
-    User queryUserByPhoneAndPwd(String phone,String passwd);
-
-    User queryUserByPhone(String phone);
+    User queryUserByPhoneAndPwd(String phone,String passwd,String loginMode);
 }

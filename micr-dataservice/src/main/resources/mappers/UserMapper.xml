@@ -168,16 +168,16 @@
 
     from u_user
 
-    where phone = #{phone,jdbcType=VARCHAR} and login_password = #{loginPassword,jdbcType=VARCHAR}
-  </select>
+    <!-- where 关键字仅能有一个 -->
+    <where>
+      <if test="phone != null and phone != ''">
+        and phone = #{phone,jdbcType=VARCHAR}
+      </if>
 
-  <select id="selectUserByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select
-    <include refid="Base_Column_List" />
-
-    from u_user
-
-    where phone = #{phone,jdbcType=VARCHAR}
+      <if test="loginPassword != null and loginPassword != ''">
+        and login_password = #{loginPassword,jdbcType=VARCHAR}
+      </if>
+    </where>
   </select>
 
   <!-- 更新最后一次登录时间 -->

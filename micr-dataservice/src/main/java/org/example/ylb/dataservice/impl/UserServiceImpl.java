@@ -6,6 +6,7 @@ import org.example.ylb.api.model.FinanceAccount;
 import org.example.ylb.api.model.User;
 import org.example.ylb.api.service.UserService;
 import org.example.ylb.common.constants.RedisKey;
+import org.example.ylb.common.constants.YLBConstant;
 import org.example.ylb.common.utils.CommonUtils;
 import org.example.ylb.dataservice.mapper.FinanceAccountMapper;
 import org.example.ylb.dataservice.mapper.UserMapper;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -127,6 +129,8 @@ public class UserServiceImpl implements UserService {
 
             // 设置过期时间
             stringRedisTemplate.expire(RedisKey.KEY_USER_PHONE, 1, TimeUnit.HOURS);
+
+            return new HashSet<>(phoneList);
         }
 
         return userPhones;
@@ -135,7 +139,7 @@ public class UserServiceImpl implements UserService {
 
     // 用户登录
     @Override
-    public User queryUserByPhoneAndPwd(String phone, String passwd) {
+    public User queryUserByPhoneAndPwd(String phone, String passwd, String loginMode) {
 
         User user = null;
 
@@ -145,7 +149,9 @@ public class UserServiceImpl implements UserService {
         if(CommonUtils.checkPhone(phone)
                 && passwd != null && passwd.length() == 32
                 // 验证手机是否已注册
-                && userPhones.contains(phone)) {
+                && userPhones.contains(phone)
+                // 密码登录
+                && loginMode.equals(YLBConstant.LOGIN_BY_PASSWORD)) {
 
             String saltPasswd = DigestUtils.md5Hex(passwd+salt);
 
@@ -156,22 +162,13 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        return user;
-    }
-
-    @Override
-    public User queryUserByPhone(String phone) {
-
-        User user = null;
-
-        Set<String> userPhones = getUserPhonesFromRedis();
-
-        // 检查参数
         if(CommonUtils.checkPhone(phone)
                 // 验证手机是否已注册
-                && userPhones.contains(phone)) {
+                && userPhones.contains(phone)
+                // 验证码登录
+                && loginMode.equals(YLBConstant.LOGIN_BY_CODE)) {
 
-            user = userMapper.selectUserByPhone(phone);
+            user = userMapper.selectUserByPhoneAndPwd(phone,null);
             if(user != null) {
                 user.setLastLoginTime(new Date());
                 userMapper.updateLastLoginTime(user);
