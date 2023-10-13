@@ -136,10 +136,10 @@ public class UserServiceImpl implements UserService {
         return userPhones;
     }
 
-
     // 用户登录
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public User queryUserByPhoneAndPwd(String phone, String passwd, String loginMode) {
+    public synchronized User queryUserByPhoneAndPwd(String phone, String passwd, String loginMode) {
 
         User user = null;
 

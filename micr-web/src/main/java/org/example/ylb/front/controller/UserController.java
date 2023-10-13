@@ -13,9 +13,7 @@ import org.example.ylb.front.view.RespResult;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,9 +39,9 @@ public class UserController extends BaseController {
             // 创建 Redis Set 实例，可执行与 set 相关的操作
             SetOperations<String,String> set = stringRedisTemplate.opsForSet();
 
-            // 如果 redis 为空
-            if(set.size(RedisKey.KEY_USER_PHONE) == 0) {
+            Set<String> userPhones = set.members(RedisKey.KEY_USER_PHONE);
 
+            if (userPhones == null || userPhones.isEmpty()) {
                 // 查询用户表中所有的电话号码
                 List<String> phoneList = userService.queryUserPhone();
 
@@ -52,11 +50,12 @@ public class UserController extends BaseController {
 
                 // 设置过期时间
                 stringRedisTemplate.expire(RedisKey.KEY_USER_PHONE, 1, TimeUnit.HOURS);
+
+                userPhones = new HashSet<>(phoneList);
             }
 
             // 匹配 Redis 中所有的用户电话号码，检验手机号是否已注册`
-            if(Boolean.TRUE.equals(set.isMember(RedisKey.KEY_USER_PHONE, phone))) {
-
+            if(userPhones.contains(phone)) {
                 respResult.setMsg("手机号码已注册");
             }else {
 
