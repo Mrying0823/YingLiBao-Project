@@ -13,12 +13,10 @@
       <div class="login-box">
         <h3 class="login-title">欢迎登录</h3>
           <el-tabs v-model="activeTab" :stretch="true">
-            <el-tab-pane label="密码登录" name="passwdLogin">
+            <el-tab-pane label="密码登录" name="password">
               <el-form ref="passwordForm">
                 <form>
                   <div class="alert-input">
-                    <!--<input class="form-border user-name" name="username" type="text" placeholder="您的姓名">
-                    <p class="prompt_name"></p>-->
                     <input type="text" class="form-border user-num" name="mobile" placeholder="请输入11位手机号" v-model="phone" @blur="checkPhone">
                     <div class="err" v-show="isPhoneErrVisible">{{ phoneErr }}</div>
                     <p class="prompt_num"></p>
@@ -29,12 +27,12 @@
                   <div class="alert-input-agree">
                     <el-checkbox v-model="agree" />&nbsp;我已阅读并同意<a href="javascript:void(0)">《动力金融网注册服务协议》</a>
                   </div>
-                  <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="passwdLoginIn">登录</el-button>
+                  <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="loginIn">登录</el-button>
                 </form>
               </el-form>
             </el-tab-pane>
 
-            <el-tab-pane label="验证码登录" name="codeLogin">
+            <el-tab-pane label="验证码登录" name="code">
               <div class="alert-input">
                 <input type="text" class="form-border user-num" name="mobile" placeholder="请输入11位手机号" v-model="phone" @blur="checkPhone">
                 <div class="err" v-show="isPhoneErrVisible">{{ phoneErr }}</div>
@@ -50,7 +48,7 @@
               <div class="alert-input-agree">
                 <el-checkbox v-model="agree" />&nbsp;我已阅读并同意<a href="javascript:void(0)">《动力金融网注册服务协议》</a>
               </div>
-              <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="codeLoginIn">登录</el-button>
+              <el-button type="primary" class="alert-input-btn" plain :loading="isLoading" size="large" @click="loginIn">登录</el-button>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -64,7 +62,8 @@
 <script>
 import PageFooter from "@/components/PageFooter";
 import PageHeader from "@/components/PageHeader";
-import {toGet} from "@/axios/httpRequest";
+import {doPost, toGet} from "@/axios/httpRequest";
+import md5 from "js-md5";
 
 export default {
   name: "LoginView",
@@ -104,7 +103,7 @@ export default {
       isLoading: false,
 
       // 选择登录方式
-      activeTab: "passwdLogin"
+      activeTab: "password"
     }
   },
 
@@ -218,7 +217,7 @@ export default {
           // 如何等待检验手机号已注册接口请求成功后
           // 等待 dom 容器更新后
           // 安全地访问更新后的 DOM 元素或执行其他操作
-          toGet("/v1/sms/register",{phone: this.phone}).then(response => {
+          toGet("/v1/sms/login",{phone: this.phone}).then(response => {
             if(response && response.data.code === 200) {
               this.showMessage("success","验证码发送成功");
 
@@ -237,40 +236,63 @@ export default {
     },
 
     // 登录
-    passwdLoginIn() {
+    loginIn() {
       this.checkPhone();
       this.checkPasswd();
-
-      // 等待 dom 容器更新后
-      this.$nextTick(() => {
-        if(this.phoneErr !== "") {
-          this.showMessage("error",this.phoneErr);
-        }else if(this.passwdErr !== "") {
-          this.showMessage("error",this.passwdErr);
-        }else if(!this.agree) {
-          this.showMessage("error","请阅读并同意 《动力金融网注册服务协议》")
-        }else {
-          this.isLoading = true;
-
-        }
-      });
-    },
-
-    codeLoginIn() {
-      this.checkPhone();
       this.checkLoginCode();
 
       // 等待 dom 容器更新后
       this.$nextTick(() => {
         if(this.phoneErr !== "") {
           this.showMessage("error",this.phoneErr);
-        }else if(this.codeErr !== "") {
+        }else if(this.passwdErr !== "" && this.activeTab === "password") {
+          this.showMessage("error",this.passwdErr);
+        }else if(this.codeErr !== "" && this.activeTab === "code") {
           this.showMessage("error",this.codeErr);
         }else if(!this.agree) {
           this.showMessage("error","请阅读并同意 《动力金融网注册服务协议》")
         }else {
           this.isLoading = true;
 
+          // 使用 MD5 加密密码
+          let newPasswd = md5(this.passwd);
+
+          // 发起登录请求
+          doPost("/v1/user/login",{
+            phone: 18978955805,
+            password: newPasswd,
+            code:this.code,
+            loginMode: this.activeTab
+          }).then(response => {
+            if(response && response.data.code === 200) {
+
+              // 登录成功，存储 accessToken 至 localStorage，只能存字符串
+              window.localStorage.setItem("accessToken",response.data.accessToken);
+
+              // 把 json 对象转为字符串
+              window.localStorage.setItem("userInfo",JSON.stringify(response.data.retData))
+
+              // 如果用户名为空，跳转至实名认证
+              if(response.data.retData.name === "") {
+                this.showMessage("success","登录成功，自动跳转至实名认证");
+                this.$router.push({
+                  path: "/"
+                });
+              }else {
+
+                // 用户名不为空，跳转至用户中心
+                this.showMessage("success","登录成功，自动跳转至用户中心");
+                this.isLoading = false;
+                this.$router.push({
+                  path: "/"
+                });
+              }
+
+            }else {
+              this.showMessage("error",response.data.msg);
+              this.isLoading = false;
+            }
+          });
         }
       });
     }
