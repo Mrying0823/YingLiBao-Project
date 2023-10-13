@@ -22,4 +22,9 @@ public class YLBConstant {
     public static final String USER_INFO_PHONE = "phone";
 
     public static final String USER_INFO_NAME = "name";
+
+    // 登录模式
+    public static final String LOGIN_BY_PASSWORD = "password";
+
+    public static final String LOGIN_BY_CODE = "code";
 }
